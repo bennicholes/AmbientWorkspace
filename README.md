@@ -1,11 +1,37 @@
-# AmbientWorkspace
+# Ambient Workspace
+[![Build Status](https://travis-ci.org/bennicholes/AmbientWorkspace.svg?branch=master)](https://travis-ci.org/bennicholes/AmbientWorkspace)
+[![codecov.io](https://codecov.io/github/bennicholes/AmbientWorkspace/coverage.svg?branch=master)](https://codecov.io/github/bennicholes/AmbientWorkspace?branch=master)
+[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
+[![Dependency Status](https://david-dm.org/bennicholes/AmbientWorkspace.svg)](https://david-dm.org/bennicholes/AmbientWorkspace)
+[![devDependency Status](https://david-dm.org/bennicholes/AmbientWorkspace/dev-status.svg)](https://david-dm.org/bennicholes/AmbientWorkspace#info=devDependencies)
 
-We should...
-1) pick a template to start from
-2) connect to the bridge via the API
-3) get a button to turn off/on lights
-4) Trello?
+## Install & Start
 
+```bash
+npm install       # or `npm run reinstall` if you get an error
+npm start         # start the application (ionic serve)
+```
+
+## Run Unit Tests
+```bash
+npm test          # run unit tests
+```
+
+## Debug Unit tests
+```bash
+npm run test.watch   # in one window - build all the tests and start watching for changes
+npm run karma        # start karma in debug mode: mutli run Chrome, hit `debug` to get going
+```
+
+## Run E2E
+```
+# e2e (aka. end-to-end, integration) - In two different shell windows
+# Make sure you don't have a global instance of Protractor
+
+# npm run webdriver-update <- You will need to run this the first time
+npm start
+npm run e2e
+```
 ## Ionic 2
 
 [Installation](http://ionicframework.com/docs/v2/getting-started/installation/)
