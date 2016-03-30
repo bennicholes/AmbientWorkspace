@@ -3,31 +3,29 @@
 import { Type }                    from 'angular2/core';
 import { App, IonicApp, Platform } from 'ionic-angular';
 import { ClickerList }             from './pages/clickerList/clickerList';
-import { Page2 }                   from './pages/page2/page2';
+import { Hue }                   from './pages/hue/hue';
 
 @App({
   templateUrl: 'build/app.html',
   config: {}, // http://ionicframework.com/docs/v2/api/config/Config/
 })
 export class ClickerApp {
-
   private rootPage: Type;
   private pages: Array<{title: string, component: Type}>;
   private app: IonicApp;
   private platform: Platform;
 
   constructor(app: IonicApp, platform: Platform) {
-
     this.app = app;
     this.platform = platform;
 
-    this.rootPage = ClickerList;
+    this.rootPage = Hue;
     this.initializeApp();
 
     // set our app's pages
     this.pages = [
-      { title: 'Clickers', component: ClickerList },
-      { title: 'Goodbye Ionic', component: Page2 },
+      { title: 'Huehuehue', component: Hue },
+      { title: 'To-do list example', component: ClickerList },
     ];
   }
 

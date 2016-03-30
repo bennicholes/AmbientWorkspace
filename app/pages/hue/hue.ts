@@ -3,10 +3,10 @@
 import { Page } from 'ionic-angular';
 
 @Page({
-  templateUrl: 'build/pages/page2/page2.html',
+  templateUrl: 'build/pages/hue/hue.html',
 })
-export class Page2 {
+export class Hue {
   constructor() {
-    // no-op
+    // n
   }
 }

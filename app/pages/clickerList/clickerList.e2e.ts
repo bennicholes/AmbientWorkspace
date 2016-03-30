@@ -9,11 +9,14 @@ describe('ClickerList', () => {
 
   beforeEach(() => {
     browser.get('');
+    // switch to last menu item (the clickers list) before every test - probably a better way to do this
+    element(by.css('.bar-button-menutoggle')).click();
+    element.all(by.css('ion-label')).last().click();
   });
 
   it('should switch into clickers page from menu', () => {
     element(by.css('.bar-button-menutoggle')).click();
-    element.all(by.css('ion-label')).first().click();
+    element.all(by.css('ion-label')).last().click();
     expect(element.all(by.css('.toolbar-title')).last().getText()).toEqual('Clickers');
   });
 

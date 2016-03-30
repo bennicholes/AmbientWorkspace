@@ -2,15 +2,15 @@ import { ElementFinder } from 'protractor';
 
 let message: ElementFinder = element(by.className('message'));
 
-describe('Page2', () => {
+describe('Hue Page', () => {
 
   beforeEach(() => {
     browser.get('');
   });
 
-  it('should have correct text when Goodbye Ionic is selected', () => {
+  it('should have correct header text', () => {
     element(by.css('.bar-button-menutoggle')).click();
-    element.all(by.css('ion-label')).last().click();
-    expect(message.getText()).toEqual('Bye!');
+    element.all(by.css('ion-label')).first().click();
+    expect(message.getText()).toEqual('Hue stuff');
   });
 });

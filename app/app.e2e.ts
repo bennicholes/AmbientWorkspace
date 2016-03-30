@@ -12,6 +12,7 @@ describe('ClickerApp', () => {
     expect(element(by.css('ion-navbar')).isPresent()).toEqual(true);
   });
 
+  /*
   it('should have correct nav text for Home', () => {
     expect(element(by.css('ion-navbar:first-child')).getText()).toEqual('Clickers');
   });
@@ -30,4 +31,5 @@ describe('ClickerApp', () => {
     element(by.css('.bar-button-menutoggle')).click();
     expect(element.all(by.css('ion-label')).last().getText()).toEqual('Goodbye Ionic');
   });
+  */
 });
