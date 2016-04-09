@@ -1,25 +1,19 @@
 'use strict';
 
 import { Page } from 'ionic-angular';
-// import hue = require('node-hue-api');
+import { HueService } from 'services/hue';
 
 @Page({
   templateUrl: 'build/pages/hue/hue.html',
+  providers: [HueService]
 })
 export class Hue {
-  private bridges: Array<Object>;
-  constructor() {
-    this.bridges = [];
+  private hueService: HueService;
+  constructor(hueService: HueService) {
+    this.hueService = hueService
   }
 
-  public findBridges (): void {
-    /*
-    hue.nupnpSearch()
-      .then((bridge: Object) => {
-        console.log(`Hue Bridge Found: ${bridge}`);
-        this.bridges.push(bridge);
-      })
-      .done();
-    */
+  public getUser () {
+    this.hueService.createUser();
   }
 }

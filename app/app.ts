@@ -1,5 +1,3 @@
-'use strict';
-
 import { Type }                    from 'angular2/core';
 import { App, IonicApp, Platform } from 'ionic-angular';
 import { ClickerList }             from './pages/clickerList/clickerList';

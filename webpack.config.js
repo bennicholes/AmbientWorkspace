@@ -41,7 +41,8 @@ module.exports = {
   resolve: {
     root: ['app'],
     alias: {
-      'angular2': path.resolve('node_modules/angular2')
+      'angular2': path.resolve('node_modules/angular2'),
+      'rxjs': path.resolve('node_modules/rxjs')
     },
     extensions: ["", ".js", ".ts"]
   }
