@@ -1,5 +1,4 @@
 import {Page, Alert, NavController} from 'ionic-angular';
-import {Http} from 'angular2/http';
 import {HueService} from '../../services/hue'
 
 
@@ -8,45 +7,16 @@ import {HueService} from '../../services/hue'
   providers: [HueService]
 })
 export class HomePage {
-  constructor(http: Http, hueService: HueService, nav: NavController) {
-    this.http = http;
+  constructor(hueService: HueService, nav: NavController) {
     this.nav = nav;
     this.hueService = hueService;
   }
 
   private hueService: HueService;
-  private http: Http;
   private nav: NavController;
 
-  public makeGetRequest() {
-    this.http.get("https://httpbin.org/ip")
-      .subscribe(data => {
-        var alert = Alert.create({
-          title: "Your IP Address",
-          subTitle: data.json().origin,
-          buttons: ["close"]
-        });
-        this.nav.present(alert);
-      }, error => {
-        console.log(JSON.stringify(error.json()));
-      });
-  }
-  public makePostRequest() {
-    this.http.post("https://httpbin.org/post", "firstname=Denis")
-      .subscribe(data => {
-        var alert = Alert.create({
-          title: "Data String",
-          subTitle: data.json().data,
-          buttons: ["close"]
-        });
-        this.nav.present(alert);
-      }, error => {
-        console.log(JSON.stringify(error.json()));
-      });
-  }
-
   public getBridges () {
-    this.hueService.getBridges()
+    this.hueService.test()
       .subscribe((data) => {
         let alert = Alert.create({
           title: 'Root get request',
@@ -54,6 +24,8 @@ export class HomePage {
           buttons: ['close']
         });
         this.nav.present(alert);
+      }, error => {
+        console.error(JSON.stringify(error.json()));
       })
   }
 }

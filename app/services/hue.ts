@@ -3,6 +3,7 @@ import { Http, Headers, Response, RequestOptions } from 'angular2/http';
 // import * as Rx from 'rxjs/Rx';
 import { Observable } from 'rxjs/Rx'
 import 'rxjs/operator/map';
+import { promiseCatchHandler } from './utils'
 
 @Injectable()
 export class HueService {
@@ -14,10 +15,7 @@ export class HueService {
 
   public user: string;
 
-  private data;
-
   private bridgeUrl = 'http://192.168.1.23/api/';
-  // No idea why it's like this
   private lightsUrl = '1028d66426293e821ecfd9ef1a0731df/lights/';
 
   /*
@@ -30,15 +28,7 @@ export class HueService {
    /rules which contains all the rules
    */
 
-  public getBridges () {
-    console.log('get bridge called')
-
-    //let request = this.http.get(this.bridgeUrl + this.lightsUrl).map(res => res.json()).subscribe(data => console.log(JSON.stringify(data)));
-    //console.log(request)
-
-    let request = this.http.get(this.bridgeUrl + this.lightsUrl).map(res => res.json());
-    console.log(request)
-
+  public test () {
     return this.http.get(this.bridgeUrl + this.lightsUrl)
       .map(res => res.json())
       .catch(this.handleError);
