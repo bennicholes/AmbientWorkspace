@@ -1,9 +1,7 @@
-'use strict';
-
+/*
 import { AbstractControl } from 'angular2/common';
 
 export class Utils {
-
   public static promiseCatchHandler(err: Error): void {
     console.error('ERROR - An error has occurred inside a promise!');
     // throw the error out to the console - http://stackoverflow.com/a/30741722
@@ -23,3 +21,4 @@ export class Utils {
     return control;
   }
 }
+*/

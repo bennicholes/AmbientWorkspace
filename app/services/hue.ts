@@ -1,15 +1,20 @@
 import { Injectable } from 'angular2/core';
 import { Http, Headers, Response, RequestOptions } from 'angular2/http';
-import { Observable } from 'rxjs/Observable';
+// import * as Rx from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx'
+import 'rxjs/operator/map';
 
 @Injectable()
 export class HueService {
-  private http: Http;
   constructor (http: Http) {
     this.http = http;
   }
 
+  private http: Http;
+
   public user: string;
+
+  private data;
 
   private bridgeUrl = 'http://192.168.1.23/api/';
   // No idea why it's like this
@@ -26,9 +31,16 @@ export class HueService {
    */
 
   public getBridges () {
-    return this.http.get(this.bridgeUrl)
+    console.log('get bridge called')
+
+    //let request = this.http.get(this.bridgeUrl + this.lightsUrl).map(res => res.json()).subscribe(data => console.log(JSON.stringify(data)));
+    //console.log(request)
+
+    let request = this.http.get(this.bridgeUrl + this.lightsUrl).map(res => res.json());
+    console.log(request)
+
+    return this.http.get(this.bridgeUrl + this.lightsUrl)
       .map(res => res.json())
-      .do(data => console.log(data))
       .catch(this.handleError);
   }
 
@@ -40,21 +52,18 @@ export class HueService {
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this.bridgeUrl, body, options)
       .map(res => res.json())
-      .do(data => console.log(data))
       .catch(this.handleError);
   }
 
   public getLights () {
     return this.http.get(this.bridgeUrl + this.lightsUrl)
       .map(res => res.json())
-      .do(data => console.log(data))
       .catch(this.handleError);
   }
 
   public getLight (id: number) {
     return this.http.get(this.bridgeUrl + this.lightsUrl + id)
       .map(res => res.json())
-      .do(data => console.log(data))
       .catch(this.handleError);
   }
 
@@ -64,7 +73,6 @@ export class HueService {
     });
     return this.http.put(this.bridgeUrl + this.lightsUrl + id + '/state', body)
       .map(res => res.json())
-      .do(data => console.log(data))
       .catch(this.handleError);
   }
 
@@ -74,7 +82,6 @@ export class HueService {
     });
     return this.http.put(this.bridgeUrl + this.lightsUrl + id + '/state', body)
       .map(res => res.json())
-      .do(data => console.log(data))
       .catch(this.handleError);
   }
 
@@ -87,24 +94,23 @@ export class HueService {
     });
     return this.http.put(this.bridgeUrl + this.lightsUrl + id + '/state', body)
       .map(res => res.json())
-      .do(data => console.log(data))
       .catch(this.handleError);
   }
   /*
-  addHero (name: string) : Observable<Hero>  {
+   addHero (name: string) : Observable<Hero>  {
 
-    let body = JSON.stringify({ name });
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
+   let body = JSON.stringify({ name });
+   let headers = new Headers({ 'Content-Type': 'application/json' });
+   let options = new RequestOptions({ headers: headers });
 
-    return this.http.post(this.bridgeUrl, body, options)
-      .map(res =>  <Hero> res.json().data)
-      .catch(this.handleError)
-  }
-  */
+   return this.http.post(this.bridgeUrl, body, options)
+   .map(res =>  <Hero> res.json().data)
+   .catch(this.handleError)
+   }
+   */
 
   private handleError (error: Response) {
     console.error(error);
-    return Observable.throw(error.json().error || 'Server error');
+    return Observable.throw(error.json() || 'Server error');
   }
 }

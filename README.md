@@ -7,61 +7,101 @@
 
 ## Install & Start
 
+### Prerequisites:
+
+1)
 ```bash
-npm install       # or `npm run reinstall` if you get an error
-npm start         # start the application (ionic serve)
+npm install -g ionic@beta
+npm install -g cordova
 ```
 
-## Run Unit Tests
+2) [Optional for now]
+
+Get the [Android SDK](http://developer.android.com/sdk/index.html). Currently using API 23, but trying to figure out how to go down to API 22.
+
+3) [Optional]
+
+After installing the Android SDK, set up the default emulator with
+```
+android avd
+```
+
+### Installation:
 ```bash
-npm test          # run unit tests
+npm install
+ionic platform add android
 ```
 
-## Debug Unit tests
+### Running:
 ```bash
-npm run test.watch   # in one window - build all the tests and start watching for changes
-npm run karma        # start karma in debug mode: mutli run Chrome, hit `debug` to get going
+ionic serve
+# or
+ionic run android
 ```
 
-## Run E2E
-```
-# e2e (aka. end-to-end, integration) - In two different shell windows
-# Make sure you don't have a global instance of Protractor
 
-# npm run webdriver-update <- You will need to run this the first time
-npm start
-npm run e2e
-```
-## Ionic 2
+## Useful links
 
-[Installation](http://ionicframework.com/docs/v2/getting-started/installation/)
+[Ionic 2 Documentation](http://ionicframework.com/docs/v2/components/#overview)
 
-[Documentation](http://ionicframework.com/docs/v2/components/#overview)
+[Hue API](http://www.developers.meethue.com/philips-hue-api)
 
-
-## Angular 2
+### Angular 2
 [Documentation](https://angular.io/docs/ts/latest/)
 
 [Angular Cheat Sheet](https://angular.io/docs/ts/latest/cheatsheet.html)
 
 [TypeScript Cheat Sheet](https://www.sitepen.com/blog/2013/12/31/typescript-cheat-sheet/)
 
-## Hue
-[API](http://www.developers.meethue.com/philips-hue-api)
 
-[node-hue-api](https://github.com/peter-murray/node-hue-api)
+## Resources
 
-[huejay](https://github.com/sqmk/huejay)
+### Tutorials
 
-## Tutorials / Other resources
 http://gonehybrid.com/build-your-first-mobile-app-with-ionic-2-angular-2-part-4/
+
+https://auth0.com/blog/2015/09/03/angular2-series-working-with-pipes/
+
+https://auth0.com/blog/2015/09/17/angular-2-series-part-2-domain-models-and-dependency-injection/
+
+https://medium.com/google-developer-experts/angular-2-introduction-to-new-http-module-1278499db2a0#.l6pubi679
+
+https://www.thepolyglotdeveloper.com/2016/01/make-http-requests-in-an-ionic-2-android-and-ios-app/
+
+https://auth0.com/blog/2015/10/15/angular-2-series-part-3-using-http/
+
+http://blog.ionic.io/ionic-2-and-auth0/
+
+### Example apps
+
+You can see the difference between the official ones here https://devdactic.com/ionic-cheatsheet/
+
+[Starter sidemenu](https://github.com/driftyco/ionic2-starter-sidemenu)
+
+[Starter tabs](https://github.com/driftyco/ionic2-starter-tabs)
+
+[Starter tutorial](https://github.com/driftyco/ionic2-starter-tutorial)
+
+https://github.com/jkuri/ionic2-rxjs-socketio-chat
+
+https://github.com/lathonez/clicker
+
+https://github.com/driftyco/ionic-conference-app
+
+https://github.com/ccoenraets/ionic2-realty
+
+https://github.com/ccoenraets/ionic2-employee-directory
+
+### Other resources
 
 https://github.com/AngularClass/awesome-angular2
 
 https://github.com/timjacobi/angular2-education
 
-## Testing
-Good practice :D
+https://github.com/AngularClass/angular2-webpack-starter This doesn't have Ionic, it's an angular 2 starter for web. But, this has a *really* good development setup.
+
+
+### Testing for future reference
 
 http://mcgivery.com/unit-testing-ionic-app/ I don't think it'll be any different with Angular 2.
 
@@ -76,31 +116,3 @@ https://developers.livechatinc.com/blog/testing-angular-2-apps-part-1-beginning/
 http://twofuckingdevelopers.com/2016/01/testing-angular-2-with-karma-and-jasmine/
 
 [Testing Angular 2 official docs](https://angular.io/docs/ts/latest/testing/)
-
-# Starter templates
-
-## Ionic 2 tutorial templates
-You can see the difference here https://devdactic.com/ionic-cheatsheet/
-
-[Starter sidemenu](https://github.com/driftyco/ionic2-starter-sidemenu)
-
-[Starter tabs](https://github.com/driftyco/ionic2-starter-tabs)
-
-[Starter tutorial](https://github.com/driftyco/ionic2-starter-tutorial)
-
-## Other templates / samples
-https://github.com/lathonez/clicker Ionic 2 + webpack + tests example app. From http://lathonez.github.io/2016/ionic-2-unit-testing/ (unit testing guide)
-
-https://github.com/driftyco/ionic-conference-app
-
-https://github.com/ccoenraets/ionic2-realty
-
-https://github.com/ccoenraets/ionic2-employee-directory
-
-https://github.com/Justin-Credible/Ionic-TypeScript-Starter (Ionic 1)
-
-https://github.com/AngularClass/angular2-webpack-starter This doesn't have Ionic, it's an angular 2 starter for web. But, this has a *really* good development setup. Can be used as a reference. It has hot-module-replacement, testing, linting...
-
-https://github.com/mgechev/angular2-seed Similar to above
-
-
