@@ -9,25 +9,27 @@
 
 ### Prerequisites:
 
-1) Ionic & Cardova
+**1) Ionic & Cordova**
 ```bash
 npm install -g ionic@beta
 npm install -g cordova
 ```
 
-2) Android SDK
+**2) Android SDK**
 
 Get the [Android SDK](http://developer.android.com/sdk/index.html).
-Beginning of [this article]("https://fedoramagazine.org/start-developing-android-apps-on-fedora-in-10-minutes/") is helpful.
+Beginning of [this article](https://fedoramagazine.org/start-developing-android-apps-on-fedora-in-10-minutes/) is helpful.
 Currently using API 23 but need to figure out how to go down to 22 if we want to test it on our phones.
 
-3) Emulator (Optional, can use phone instead)
+**3) Emulator** (Optional, can use phone instead)
 
-After installing the Android SDK set up the default emulator with
-```
+Set up the default emulator with
+```bash
 android avd
 ```
-![Example of a working AVD:](".emulator.png")
+Example of a working AVD:
+
+![Example of a working AVD](.emulator.png)
 
 ### Installation:
 ```bash
@@ -39,9 +41,9 @@ ionic platform add android
 ```bash
 ionic serve
 # or
-# either runs this on your phone or on an emulator
-# opens an emulator if one isn't open, but need to run the command again in another terminal to load the app
-ionic run android 
+# run the app on your phone or on an emulator, with live reload and console logs
+# opens an emulator if one isn't open but doesn't start the app
+ionic run android --livereload -c
 ```
 
 
