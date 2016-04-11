@@ -9,13 +9,9 @@ import {bridgeIp, HueService} from '../../services/hue'
 })
 export class HomePage {
   constructor(hueService: HueService, nav: NavController, ngZone: NgZone) {
-    this.nav = nav
     this.hueService = hueService
+    this.nav = nav
     this.ngZone = ngZone
-    this.getUser()
-  }
-
-  private getUser () : void {
     this.hueService.getUser()
       .then(user => {
         // wrap this in ngZone.run because otherwise angular isn't detecting changes...
@@ -28,17 +24,34 @@ export class HomePage {
           }
         })
       }, error => {
-        console.warn('on error')
+        console.error('HopePage construct: error in getUser promise in ')
       })
   }
   private hueService: HueService
   private nav: NavController
   private ngZone: NgZone
 
+  // for now connected just means there is a user already stored in the app so we don't have to create a new one,
+  // later will actually find bridge IPs and connect to bridge
+  public connected: boolean = false
   public bridgeIp: string = bridgeIp
   public lights = []
-  public connected: boolean = false
 
+  // eventually probably take entire state as param instead
+  public changeColor (hue: number): void {
+    // find first reachable light bulb
+    // light bulb IDs start at 1
+    let id: number = 1 + this.lights.findIndex(light => light.state.reachable)
+    this.hueService
+      .changeColor(id, {
+        bri: 255,
+        sat: 255,
+        hue
+      })
+      .subscribe(response => console.log('change color', response))
+  }
+
+  /* Only called if the app didn't already store a user */
   public createUser () {
     this.hueService.createUser()
       .subscribe(responses => {
@@ -58,10 +71,10 @@ export class HomePage {
             title: 'Connect',
             subTitle: alertMessage,
             buttons: ['close']
-          });
-          this.nav.present(alert);
+          })
+          this.nav.present(alert)
         }
-      });
+      })
   }
 
   public getLights() {
