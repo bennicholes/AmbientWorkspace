@@ -1,9 +1,36 @@
 <ion-navbar *navbar>
   <ion-title>
-    Home
+    Hue
   </ion-title>
 </ion-navbar>
 
 <ion-content class="home">
-  <button (click)="getBridges()">Hue</button>
+
+  <section>
+    <h2>Bridge</h2>
+    <!-- Eventually display a select with the bridges found here -->
+    <button *ngIf="!connected" (click)="createUser()">Connect to bridge {{bridgeIp}}</button>
+    <p *ngIf="connected">Connected to {{bridgeIp}}</p>
+  </section>
+
+  <section *ngIf="connected">
+
+    <section>
+      <h2>Lights</h2>
+      <!-- Should be selectable? -->
+      <ion-list inset *ngIf="lights.length > 0">
+        <ion-item *ngFor="#light of lights">
+          {{light.name}}
+          <span *ngIf="light.state.reachable === true">- reachable</span>
+        </ion-item>
+      </ion-list>
+    </section>
+
+    <section>
+      <h2>Controls</h2>
+      <button (click)="turnOn()">Turn on all the lights</button>
+      <button (click)="turnOff()">Turn off all the lights</button>
+  </section>
+
+  </section>
 </ion-content>

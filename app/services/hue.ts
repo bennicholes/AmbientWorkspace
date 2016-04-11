@@ -1,22 +1,27 @@
+import { Storage, SqlStorage } from 'ionic-angular'
+
 import { Injectable } from 'angular2/core';
 import { Http, Headers, Response, RequestOptions } from 'angular2/http';
 // import * as Rx from 'rxjs/Rx';
 import { Observable } from 'rxjs/Rx'
 import 'rxjs/operator/map';
-import { promiseCatchHandler } from './utils'
+
+export let bridgeIp: string = '192.168.1.23'
 
 @Injectable()
 export class HueService {
   constructor (http: Http) {
     this.http = http;
+    this.storage = new Storage(SqlStorage)
   }
 
   private http: Http;
+  private storage: Storage;
 
-  public user: string;
+  public user: string
 
-  private bridgeUrl = 'http://192.168.1.23/api/';
-  private lightsUrl = '1028d66426293e821ecfd9ef1a0731df/lights/';
+  private bridgeUrl: string = 'http://'+ bridgeIp + '/api/';
+  private lightsUrl: string = '/lights/';
 
   /*
    /lights resource which contains all the light resources
@@ -28,63 +33,115 @@ export class HueService {
    /rules which contains all the rules
    */
 
-  public test () {
-    return this.http.get(this.bridgeUrl + this.lightsUrl)
-      .map(res => res.json())
+  /*
+   // I doubt these are needed for the hue
+   private headers = new Headers({ 'Content-Type': 'application/json' });
+   private options = new RequestOptions({ headers: headers });
+   */
+
+  public getUser () {
+    return new Promise ((resolve, reject) => {
+      this.storage
+        .get('username')
+        .then(username => {
+          if (username) {
+            this.user = username
+            resolve(username)
+          } else {
+            this.user = ''
+            reject(username)
+          }
+        })
+    })
+  }
+  private get (url: string = ''): Observable<{}> {
+    return this.http
+      .get(this.bridgeUrl + url)
+      .map(response => response.json())
       .catch(this.handleError);
   }
 
-  public createUser () {
-    let body = JSON.stringify({
-      devicetype: 'my_hue_app#iphone peter'
-    });
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.bridgeUrl, body, options)
-      .map(res => res.json())
+  private post (url: string = '', body: {} = {}): Observable<{}> {
+    return this.http
+      .post(this.bridgeUrl + url, JSON.stringify(body))
+      .map(response => response.json())
       .catch(this.handleError);
   }
 
-  public getLights () {
-    return this.http.get(this.bridgeUrl + this.lightsUrl)
-      .map(res => res.json())
+  private put (url: string = '', body: {} = {}): Observable<{}> {
+    return this.http
+      .put(this.bridgeUrl + url, JSON.stringify(body))
+      .map(response => response.json())
       .catch(this.handleError);
   }
 
-  public getLight (id: number) {
-    return this.http.get(this.bridgeUrl + this.lightsUrl + id)
-      .map(res => res.json())
-      .catch(this.handleError);
+  public findBridges () {
+    // TODO: Not super important; right now the bridge IP is harded coded in, you can find it by using official hue app
   }
 
-  public turnOffLight (id: number) {
-    let body = JSON.stringify({
+  public createUser (): Observable<{}> {
+    // TODO: look at 'devicetype'
+    let body = {
+      devicetype: 'my_hue_app#android denis'
+    };
+
+    let request = this.post('', body)
+
+    request.subscribe((responses) => {
+      let response = responses[0]
+      if (response.success) {
+        this.storage.set('username', response.success.username)
+        this.user = response.success.username
+      }
+    })
+
+    return request
+  }
+
+  public getLights (): Observable<{}>  {
+    return this.get(this.user + this.lightsUrl)
+  }
+
+  public getLight (id: number): Observable<{}>  {
+    return this.get(this.user + this.lightsUrl + id)
+  }
+
+  public turnOffLight (id: number): Observable<{}>  {
+    let body = {
       on: false
-    });
-    return this.http.put(this.bridgeUrl + this.lightsUrl + id + '/state', body)
-      .map(res => res.json())
-      .catch(this.handleError);
+    }
+    return this.put(this.user + this.lightsUrl + id + '/state', body)
   }
 
-  public turnOnLight (id: number) {
-    let body = JSON.stringify({
+  public turnOffLights (): Observable<{}>  {
+    let body = {
+      on: false
+    }
+    return this.put(this.user + '/groups/0/action', body)
+  }
+
+  public turnOnLight (id: number): Observable<{}>  {
+    let body = {
       on: true
-    });
-    return this.http.put(this.bridgeUrl + this.lightsUrl + id + '/state', body)
-      .map(res => res.json())
-      .catch(this.handleError);
+    };
+    return this.put(this.user + this.lightsUrl + id + '/state', body)
   }
 
-  public changeColor (id: number) {
-    let body = JSON.stringify({
+  public turnOnLights (): Observable<{}>  {
+    let body = {
+      on: true
+    }
+    return this.put(this.user + '/groups/0/action', body)
+  }
+
+  public changeColor (id: number): Observable<{}>  {
+    let body = {
       on: true, // idk if necessary
       sat: 254,
       bri: 254,
       hue: 10000
-    });
-    return this.http.put(this.bridgeUrl + this.lightsUrl + id + '/state', body)
-      .map(res => res.json())
-      .catch(this.handleError);
+    };
+    return this.put(this.user + this.lightsUrl + id + '/state', body)
   }
   /*
    addHero (name: string) : Observable<Hero>  {
@@ -99,7 +156,7 @@ export class HueService {
    }
    */
 
-  private handleError (error: Response) {
+  private handleError (error: Response) : Observable<{}>  {
     console.error(error);
     return Observable.throw(error.json() || 'Server error');
   }
