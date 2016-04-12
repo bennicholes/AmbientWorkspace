@@ -39,7 +39,7 @@
     <h2>Weather</h2>
     Zip Code:<input type="text" id="zipcode" name="zipcode"/>
     <br/>
-    <button (click)="getWeather()">Get Weather</button>
+    <button (click)="weatherService.getWeather()">Get Weather</button>
     <button (click)="turnOffWeather()">Turn off Weather Sync</button>
     <br/>
     <button (click)="changeColor(12500)">Clear</button> <!-- I hope this is yellow -->

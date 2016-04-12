@@ -9,8 +9,9 @@ import {WeatherService} from '../../services/weather'
   providers: [HueService, WeatherService]
 })
 export class HomePage {
-  constructor(hueService: HueService, nav: NavController, ngZone: NgZone) {
+  constructor(hueService: HueService, weatherService: WeatherService, nav: NavController, ngZone: NgZone) {
     this.hueService = hueService
+    this.weatherService = weatherService
     this.nav = nav
     this.ngZone = ngZone
     this.hueService.getUser()
