@@ -1,11 +1,12 @@
 import {Page, Alert, NavController} from 'ionic-angular'
 import {NgZone} from 'angular2/core'
 import {bridgeIp, HueService} from '../../services/hue'
+import {WeatherService} from '../../services/weather'
 
 
 @Page({
   templateUrl: 'build/pages/home/home.html',
-  providers: [HueService]
+  providers: [HueService, WeatherService]
 })
 export class HomePage {
   constructor(hueService: HueService, nav: NavController, ngZone: NgZone) {
@@ -28,6 +29,7 @@ export class HomePage {
       })
   }
   private hueService: HueService
+  private weatherService: WeatherService
   private nav: NavController
   private ngZone: NgZone
 
