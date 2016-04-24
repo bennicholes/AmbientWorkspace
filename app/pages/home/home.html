@@ -13,6 +13,7 @@
     <p *ngIf="connected">Connected to {{bridgeIp}}</p>
   </section>
 
+  <!-- REVERSED FOR TESTING -->
   <section *ngIf="!connected">
 
     <section>
@@ -39,7 +40,7 @@
     <h2>Weather</h2>
     Zip Code:<input type="text" id="zipcode" name="zipcode"/>
     <br/>
-    <button (click)="weatherService.getWeather()">Get Weather</button>
+    <button (click)="getWeather()">Get Weather</button>
     <button (click)="turnOffWeather()">Turn off Weather Sync</button>
     <br/>
     <button (click)="changeColor(12500)">Clear</button> <!-- I hope this is yellow -->

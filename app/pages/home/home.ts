@@ -9,11 +9,12 @@ import {WeatherService} from '../../services/weather'
   providers: [HueService, WeatherService]
 })
 export class HomePage {
-  constructor(hueService: HueService, weatherService: WeatherService, nav: NavController, ngZone: NgZone) {
-    this.hueService = hueService
-    this.weatherService = weatherService
-    this.nav = nav
-    this.ngZone = ngZone
+  constructor(
+    private hueService: HueService,
+    private weatherService: WeatherService,
+    private nav: NavController,
+    private ngZone: NgZone
+  ) {
     this.hueService.getUser()
       .then(user => {
         // wrap this in ngZone.run because otherwise angular isn't detecting changes...
@@ -29,16 +30,13 @@ export class HomePage {
         console.error('HopePage construct: error in getUser promise in ')
       })
   }
-  private hueService: HueService
-  private weatherService: WeatherService
-  private nav: NavController
-  private ngZone: NgZone
 
   // for now connected just means there is a user already stored in the app so we don't have to create a new one,
   // later will actually find bridge IPs and connect to bridge
   public connected: boolean = false
   public bridgeIp: string = bridgeIp
   public lights = []
+  public weather
 
   // eventually probably take entire state as param instead
   public changeColor (hue: number): void {
@@ -80,7 +78,7 @@ export class HomePage {
       })
   }
 
-  public getLights() {
+  public getLights () {
     this.hueService.getLights()
       .subscribe(lights => {
         Object.keys(lights).forEach((key) => {
@@ -90,6 +88,13 @@ export class HomePage {
       })
   }
 
+  public getWeather () {
+    this.weatherService.getWeather(89434)
+      .subscribe(weather => {
+        console.info('Weather response', weather)
+        this.weather = weather
+      })
+  }
   public turnOn () {
     this.hueService.turnOnLights()
       .subscribe((response) => console.log('turn on lights', response))
