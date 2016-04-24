@@ -30,7 +30,7 @@ export class HueService {
    /sensors which contains all the sensors
    /rules which contains all the rules
   */
-  private bridgeUrl: string = 'http://'+ bridgeIp + '/api/'
+  private bridgeUrl: string = 'http://' + bridgeIp + '/api/'
   private lightsUrl: string = '/lights/'
 
   public user: string
