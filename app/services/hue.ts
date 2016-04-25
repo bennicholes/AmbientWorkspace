@@ -10,8 +10,6 @@ import 'rxjs/operator/map'
  private options = new RequestOptions({ headers: headers })
  */
 
-export let bridgeIp: string = '192.168.1.23'
-
 @Injectable()
 export class HueService {
   constructor (private http: Http) {
@@ -19,6 +17,8 @@ export class HueService {
   }
 
   private storage: Storage
+  private bridgeIp: string
+  private user: string
   /*
    /lights resource which contains all the light resources
    /groups resource which contains all the groups
@@ -28,52 +28,55 @@ export class HueService {
    /sensors which contains all the sensors
    /rules which contains all the rules
   */
-  private bridgeUrl: string = 'http://' + bridgeIp + '/api/'
+  get bridgeUrl () {
+    return `http://${this.bridgeIp}/api/`
+  }
   private lightsUrl: string = '/lights/'
-
-  // dont remember why this is public
-  public user: string
 
   /*
     Public methods
    */
+  public connect (bridgeIp: string) {
+    return new Promise ((resolve, reject) => {
+      this.storage
+        .get(bridgeIp)
+        .then(username => {
+          console.log('retrieved username attempt', username)
+          this.bridgeIp = bridgeIp
+          if (username) {
+            this.user = username
+            resolve({}) // hehe why not you know
+          } else {
+            resolve(this.createUser(bridgeIp))
+          }
+        })
+    })
+  }
 
   public changeColor (id: number, state: {}): Observable<{}>  {
     // http://www.developers.meethue.com/documentation/core-concepts
     return this.put(this.user + this.lightsUrl + id + '/state', state)
   }
 
-  public createUser (bridgeIp: string): Observable<{}> {
-    // TODO: "device" should be something like "iphone peter", although I doubt this is important
-    let body = {
-      devicetype: 'ambient_workspace#device'
-    }
-
-    let request = this.post('', body).first()
-
-    request.subscribe((response) => {
-      if (response.success) {
-        this.storage.set(bridgeIp, response.success.username)
-        this.user = response.success.username
-      } // TODO: error hand ling?
-    })
-
-    return request
-  }
-
   /**
    * Might need to clean up all the users I've created...
    * @param username that is to be deleted
-   * @returns {Observable<{}>} the request
+   * @returns {Observable<{}>}
      */
   public deleteUser (username: string): Observable<{}> {
     return this.delete(this.user + '/config/whitelist/' + username)
   }
 
+  /**
+   * Response from this api is array of bridges that each have id (ex: "001788fffe262be0") and internalipaddress
+   * TODO: This should also do UPNP and IP scan either in parallel or if NUPNP doesn't return anything (not priority)
+   * @returns {Observable<[string]>} bridge ip addresses
+     */
   public findBridges () {
     return this.http
       .get('https://www.meethue.com/api/nupnp')
       .map(response => response.json())
+      .map(bridges => bridges.map(bridge => bridge.internalipaddress))
       .catch(this.handleError)
   }
 
@@ -154,6 +157,24 @@ export class HueService {
   /*
     Private helper functions
    */
+
+  private createUser (bridgeIp: string) {
+    // TODO: "device" should be something like "iphone peter", although I doubt this is important
+    let body = {
+      devicetype: 'ambient_workspace#device'
+    }
+
+    let request = this.post('', body).map(object => object[0])
+    request.subscribe((response: any) => {
+      console.log('create user response', response)
+      if (response.success) {
+        this.storage.set(bridgeIp, response.success.username)
+        this.user = response.success.username
+      } // TODO: error handling?
+    })
+
+    return request
+  }
 
   private delete (url: string = ''): Observable<{}> {
     return this.http

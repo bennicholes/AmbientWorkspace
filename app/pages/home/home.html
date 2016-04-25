@@ -8,17 +8,19 @@
 
   <section>
     <h2>Bridge</h2>
-    <!-- Eventually display a select with the bridges found here -->
-    <button *ngIf="!connected" (click)="createUser()">Connect to bridge {{bridgeIp}}</button>
-    <p *ngIf="connected">Connected to {{bridgeIp}}</p>
+    <p *ngIf="connected">Connected to {{selectedBridge}}</p>
+    <p *ngIf="!connected">Connect to a bridge!</p>
+    <ion-item>
+      <ion-select [(ngModel)]="selectedBridge">
+        <ion-option *ngFor="#bridge of bridges" [value]="bridge">{{bridge}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <button (click)="connect(selectedBridge)">Connect</button>
   </section>
 
-  <!-- REVERSED FOR TESTING -->
-  <section *ngIf="!connected">
-
+  <section *ngIf="connected">
     <section>
       <h2>Lights</h2>
-      <!-- Should be selectable? -->
       <ion-list inset *ngIf="lights.length > 0">
         <ion-item *ngFor="#light of lights">
           {{light.name}}
@@ -36,9 +38,12 @@
       <button (click)="changeColor(0)">RED</button>
   </section>
 
-  <section>
+  <section *ngIf="connected">
     <h2>Weather</h2>
-    Zip Code:<input type="text" id="zipcode" name="zipcode"/>
+    <ion-item>
+      <ion-label stacked>Zip Code</ion-label>
+      <ion-input type="number" [(ngModel)]="zipCode"></ion-input>
+    </ion-item>
     <br/>
     <button (click)="getWeather()">Get Weather</button>
     <button (click)="turnOffWeather()">Turn off Weather Sync</button>
