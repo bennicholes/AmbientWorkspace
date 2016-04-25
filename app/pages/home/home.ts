@@ -34,6 +34,7 @@ export class HomePage {
   // for now connected just means there is a user already stored in the app so we don't have to create a new one,
   // later will actually find bridge IPs and connect to bridge
   public connected: boolean = false
+  public autoWeather: boolean = true
   public bridgeIp: string = bridgeIp
   public lights = []
   public weather
