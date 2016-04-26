@@ -13,14 +13,33 @@
     <ion-card>
       <ion-card-header>Bridge Connection</ion-card-header>
       <ion-card-content>
-        <button danger block *ngIf="!connected" (click)="createUser()">
+        <button danger block *ngIf="!connected" (click)="connect(selectedBridge)">
           <ion-icon name="power"></ion-icon>
-          Connect to Bridge: {{bridgeIP}}
+          Connect to Bridge:
+          <ion-item>
+            <ion-select [(ngModel)]="selectedBridge">
+              <ion-option *ngFor="#bridge of bridges" [value]="bridge">{{bridge}}</ion-option>
+            </ion-select>
+          </ion-item>
         </button>
-        <button secondary block *ngIf="connected" disabled="connected">
-          <ion-icon name="power"></ion-icon>
-          Connected to Bridge: {{bridgeIP}}
-        </button>
+
+        <div *ngIf="connected">
+          <button secondary block disabled="connected">
+            <ion-icon name="power"></ion-icon>
+            Connected to Bridge: {{selectedBridge}}
+          </button>
+          <ion-list>
+            <ion-item *ngFor="#light of lights">
+              {{light.name}}
+              <span *ngIf="light.state.reachable === true">- reachable</span>
+            </ion-item>
+          </ion-list>
+          <button (click)="turnOn()">On</button>
+          <button (click)="turnOff()">Off</button>
+          <button (click)="changeColor(46920)">BLUE</button>
+          <button (click)="changeColor(0)">RED</button>
+        </div>
+
       </ion-card-content>
     </ion-card>
   </ion-slide>
@@ -33,34 +52,41 @@
       </ion-card-content>
       <ion-card-content>
         <ion-item>
-          <ion-label>Automatic Weather</ion-label>
+          <ion-label>Weather Sync</ion-label>
           <ion-toggle checked="true"></ion-toggle>
         </ion-item>
-          <button large disabled="autoWeather">
-            <ion-icon name="cloudy"></ion-icon>
-          </button>
-          <button large disabled="autoWeather">
-            <ion-icon name="sunny"></ion-icon>
-          </button>
-          <button large disabled="autoWeather">
-            <ion-icon name="partly-sunny"></ion-icon>
-          </button>
-          <button large disabled="autoWeather">
-            <ion-icon name="rainy"></ion-icon>
-          </button>
-          <button large disabled="autoWeather">
-            <ion-icon name="thunderstorm"></ion-icon>
-          </button>
-          <button large disabled="autoWeather">
-            <ion-icon name="snow"></ion-icon>
-          </button>
-          <button large disabled="autoWeather">
-            <ion-icon name="cloudy-night"></ion-icon>
-          </button>
-          <button large disabled="autoWeather">
-            <ion-icon name="moon"></ion-icon>
-          </button>
-        </ion-card-content>
+        <!--
+        <ion-item>
+          <ion-label stacked>Zip Code</ion-label>
+          <ion-input type="number" [(ngModel)]="zipCode"></ion-input>
+        </ion-item>
+        <button (click)="getWeather(zipCode)">Get Weather</button>
+        -->
+        <button large>
+          <ion-icon name="cloudy"></ion-icon>
+        </button>
+        <button large (click)="changeColor(12500)">
+          <ion-icon name="sunny"></ion-icon>
+        </button>
+        <button large>
+          <ion-icon name="partly-sunny"></ion-icon>
+        </button>
+        <button large (click)="changeColor(36920)">
+          <ion-icon name="rainy"></ion-icon>
+        </button>
+        <button large>
+          <ion-icon name="thunderstorm"></ion-icon>
+        </button>
+        <button large (click)="changeColor(46920)">
+          <ion-icon name="snow"></ion-icon>
+        </button>
+        <button large>
+          <ion-icon name="cloudy-night"></ion-icon>
+        </button>
+        <button large>
+          <ion-icon name="moon"></ion-icon>
+        </button>
+      </ion-card-content>
     </ion-card>
   </ion-slide>
 
@@ -100,55 +126,6 @@
       </ion-card>
     </ion-slide>
 
-</ion-slides>
-
-  <!-- Working code:
-  <section>
-    <h2>Bridge</h2>
-    <p *ngIf="connected">Connected to {{selectedBridge}}</p>
-    <p *ngIf="!connected">Connect to a bridge!</p>
-    <ion-item>
-      <ion-select [(ngModel)]="selectedBridge">
-        <ion-option *ngFor="#bridge of bridges" [value]="bridge">{{bridge}}</ion-option>
-      </ion-select>
-    </ion-item>
-    <button (click)="connect(selectedBridge)">Connect</button>
-  </section>
-
-  <section *ngIf="connected">
-    <section>
-      <h2>Lights</h2>
-      <ion-list inset *ngIf="lights.length > 0">
-        <ion-item *ngFor="#light of lights">
-          {{light.name}}
-          <span *ngIf="light.state.reachable === true">- reachable</span>
-        </ion-item>
-      </ion-list>
-    </section>
-
-    <section>
-      <h2>Controls</h2>
-      <button (click)="turnOn()">Turn on all the lights</button>
-      <button (click)="turnOff()">Turn off all the lights</button>
-      <br />
-      <button (click)="changeColor(46920)">BLUE</button>
-      <button (click)="changeColor(0)">RED</button>
-  </section>
-
-  <section *ngIf="connected">
-    <h2>Weather</h2>
-    <ion-item>
-      <ion-label stacked>Zip Code</ion-label>
-      <ion-input type="number" [(ngModel)]="zipCode"></ion-input>
-    </ion-item>
-    <br/>
-    <button (click)="getWeather()">Get Weather</button>
-    <button (click)="turnOffWeather()">Turn off Weather Sync</button>
-    <br/>
-    <button (click)="changeColor(12500)">Clear</button> <!- - I hope this is yellow - ->
-    <button (click)="changeColor(36920)">Rain</button> <!- - Blue/Green?? - ->
-    <button (click)="changeColor(46920)">Snow</button> <!- - Blue - ->
-  </section>
-  -->
+  </ion-slides>
 
 </ion-content>

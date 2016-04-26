@@ -104,16 +104,15 @@ export class HomePage {
     this.hueService.getLights()
       .subscribe(lights => {
         Object.keys(lights).forEach((key) => {
-          console.log(lights[key])
           this.lights.push(lights[key])
         })
       })
   }
 
-  public getWeather () {
-    this.weatherService.getWeather(89434)
+  public getWeather (zipCode: number = 89434) {
+    this.weatherService.getWeather(zipCode)
       .subscribe(weather => {
-        console.info('Weather response', weather)
+        console.log('Weather response', weather)
         this.weather = weather
       })
   }
