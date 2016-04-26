@@ -1,11 +1,108 @@
-<ion-navbar *navbar>
+
+<ion-toolbar dark>
   <ion-title>
-    Hue
+    Ambient Workspace
   </ion-title>
-</ion-navbar>
+</ion-toolbar>
 
 <ion-content class="home">
 
+  <ion-slides pager>
+
+  <ion-slide style="background-color: #67eebd">
+    <ion-card>
+      <ion-card-header>Bridge Connection</ion-card-header>
+      <ion-card-content>
+        <button danger block *ngIf="!connected" (click)="createUser()">
+          <ion-icon name="power"></ion-icon>
+          Connect to Bridge: {{bridgeIP}}
+        </button>
+        <button secondary block *ngIf="connected" disabled="connected">
+          <ion-icon name="power"></ion-icon>
+          Connected to Bridge: {{bridgeIP}}
+        </button>
+      </ion-card-content>
+    </ion-card>
+  </ion-slide>
+
+  <ion-slide style="background-color: #bb96ff">
+    <ion-card>
+      <ion-card-header>Weather</ion-card-header>
+      <ion-card-content>
+        Current Weather:
+      </ion-card-content>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>Automatic Weather</ion-label>
+          <ion-toggle checked="true"></ion-toggle>
+        </ion-item>
+          <button large disabled="autoWeather">
+            <ion-icon name="cloudy"></ion-icon>
+          </button>
+          <button large disabled="autoWeather">
+            <ion-icon name="sunny"></ion-icon>
+          </button>
+          <button large disabled="autoWeather">
+            <ion-icon name="partly-sunny"></ion-icon>
+          </button>
+          <button large disabled="autoWeather">
+            <ion-icon name="rainy"></ion-icon>
+          </button>
+          <button large disabled="autoWeather">
+            <ion-icon name="thunderstorm"></ion-icon>
+          </button>
+          <button large disabled="autoWeather">
+            <ion-icon name="snow"></ion-icon>
+          </button>
+          <button large disabled="autoWeather">
+            <ion-icon name="cloudy-night"></ion-icon>
+          </button>
+          <button large disabled="autoWeather">
+            <ion-icon name="moon"></ion-icon>
+          </button>
+        </ion-card-content>
+    </ion-card>
+  </ion-slide>
+
+    <ion-slide style="background-color: #cff381">
+      <ion-card>
+        <ion-card-header>Push Notifications</ion-card-header>
+        <ion-card-content>
+          <button large>
+            <ion-icon name="mail"></ion-icon>
+          </button>
+          <button large>
+            <ion-icon name="alert"></ion-icon>
+          </button>
+          <button large>
+            <ion-icon name="notifications"></ion-icon>
+          </button>
+          <button large>
+            <ion-icon name="calendar"></ion-icon>
+          </button>
+          <button large>
+            <ion-icon name="call"></ion-icon>
+          </button>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+
+    <ion-slide style="background-color: #ed6d79">
+      <ion-card>
+        <ion-card-header>NightShift</ion-card-header>
+        <ion-card-content>
+
+          <ion-item>
+            <ion-label>Activated</ion-label>
+            <ion-toggle checked="false"></ion-toggle>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+
+</ion-slides>
+
+  <!-- Working code:
   <section>
     <h2>Bridge</h2>
     <p *ngIf="connected">Connected to {{selectedBridge}}</p>
@@ -48,10 +145,10 @@
     <button (click)="getWeather()">Get Weather</button>
     <button (click)="turnOffWeather()">Turn off Weather Sync</button>
     <br/>
-    <button (click)="changeColor(12500)">Clear</button> <!-- I hope this is yellow -->
-    <button (click)="changeColor(36920)">Rain</button> <!-- Blue/Green?? -->
-    <button (click)="changeColor(46920)">Snow</button> <!-- Blue -->
+    <button (click)="changeColor(12500)">Clear</button> <!- - I hope this is yellow - ->
+    <button (click)="changeColor(36920)">Rain</button> <!- - Blue/Green?? - ->
+    <button (click)="changeColor(46920)">Snow</button> <!- - Blue - ->
   </section>
+  -->
 
-  </section>
 </ion-content>
