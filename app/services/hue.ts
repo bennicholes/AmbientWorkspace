@@ -10,17 +10,15 @@ import 'rxjs/operator/map'
  private options = new RequestOptions({ headers: headers })
  */
 
-export let bridgeIp: string = '192.168.1.23'
-
 @Injectable()
 export class HueService {
-  constructor (http: Http) {
-    this.http = http
+  constructor (private http: Http) {
     this.storage = new Storage(SqlStorage)
   }
 
-  private http: Http
   private storage: Storage
+  private bridgeIp: string
+  private user: string
   /*
    /lights resource which contains all the light resources
    /groups resource which contains all the groups
@@ -30,45 +28,82 @@ export class HueService {
    /sensors which contains all the sensors
    /rules which contains all the rules
   */
-  private bridgeUrl: string = 'http://' + bridgeIp + '/api/'
+  get bridgeUrl () {
+    return `http://${this.bridgeIp}/api/`
+  }
   private lightsUrl: string = '/lights/'
 
-  public user: string
+  /*
+    Public methods
+   */
+  public connect (bridgeIp: string) {
+    return new Promise ((resolve, reject) => {
+      this.storage
+        .get(bridgeIp)
+        .then(username => {
+          console.log('retrieved username attempt', username)
+          this.bridgeIp = bridgeIp
+          if (username) {
+            this.user = username
+            resolve({}) // hehe why not you know
+          } else {
+            resolve(this.createUser(bridgeIp))
+          }
+        })
+    })
+  }
 
   public changeColor (id: number, state: {}): Observable<{}>  {
     // http://www.developers.meethue.com/documentation/core-concepts
     return this.put(this.user + this.lightsUrl + id + '/state', state)
   }
 
-  public createUser (): Observable<{}> {
-    // TODO: look at what 'devicetype' is
-    let body = {
-      devicetype: 'my_hue_app#android denis'
-    }
-
-    let request = this.post('', body)
-
-    request.subscribe((responses) => {
-      let response = responses[0]
-      if (response.success) {
-        this.storage.set('username', response.success.username)
-        this.user = response.success.username
-      }
-    })
-
-    return request
+  /**
+   * Might need to clean up all the users I've created...
+   * @param username that is to be deleted
+   * @returns {Observable<{}>}
+     */
+  public deleteUser (username: string): Observable<{}> {
+    return this.delete(this.user + '/config/whitelist/' + username)
   }
 
+  /**
+   * Response from this api is array of bridges that each have id (ex: "001788fffe262be0") and internalipaddress
+   * TODO: This should also do UPNP and IP scan either in parallel or if NUPNP doesn't return anything (not priority)
+   * @returns {Observable<[string]>} bridge ip addresses
+     */
   public findBridges () {
-    // TODO: Not super important. Right now the bridge IP is harded coded in, you can find it by using official hue app
+    return this.http
+      .get('https://www.meethue.com/api/nupnp')
+      .map(response => response.json())
+      .map(bridges => bridges.map(bridge => bridge.internalipaddress))
+      .catch(this.handleError)
   }
 
-  public getLights (): Observable<{}>  {
+  /**
+   * Returns the entire bridge state including lights, group, config, etc.
+   * Resource intensive for the bridge.
+   * http://www.developers.meethue.com/documentation/configuration-api#75_get_full_state_datastore
+   * @returns {Observable<{}>} the request
+   */
+  public getBridgeState (): Observable<{}> {
+    return this.get(this.user)
+  }
+
+  public getLights (): Observable<{}> {
     return this.get(this.user + this.lightsUrl)
   }
 
-  public getLight (id: number): Observable<{}>  {
+  public getLight (id: number): Observable<{}> {
     return this.get(this.user + this.lightsUrl + id)
+  }
+
+  /**
+   * I wonder if this returns the default scenes? I wonder if the "flux" mode is a default scene?
+   * @returns {Observable<{}>}
+     */
+  public getScenes (): Observable<{}> {
+    return this.get(this.user + '/scenes')
   }
 
   public getUser () {
@@ -117,6 +152,35 @@ export class HueService {
     // first group contains all the lights
     // note: max 1 req/s
     return this.put(this.user + '/groups/0/action', body)
+  }
+
+  /*
+    Private helper functions
+   */
+
+  private createUser (bridgeIp: string) {
+    // TODO: "device" should be something like "iphone peter", although I doubt this is important
+    let body = {
+      devicetype: 'ambient_workspace#device'
+    }
+
+    let request = this.post('', body).map(object => object[0])
+    request.subscribe((response: any) => {
+      console.log('create user response', response)
+      if (response.success) {
+        this.storage.set(bridgeIp, response.success.username)
+        this.user = response.success.username
+      } // TODO: error handling?
+    })
+
+    return request
+  }
+
+  private delete (url: string = ''): Observable<{}> {
+    return this.http
+      .delete(this.bridgeUrl + url)
+      .map(response => response.json())
+      .catch(this.handleError)
   }
 
   private get (url: string = ''): Observable<{}> {

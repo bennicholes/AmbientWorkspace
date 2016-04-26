@@ -1,6 +1,7 @@
 import {Page, Alert, NavController} from 'ionic-angular'
+// import { Observable } from 'rxjs/Rx'
 import {NgZone} from 'angular2/core'
-import {bridgeIp, HueService} from '../../services/hue'
+import {HueService} from '../../services/hue'
 import {WeatherService} from '../../services/weather'
 
 
@@ -15,30 +16,32 @@ export class HomePage {
     private nav: NavController,
     private ngZone: NgZone
   ) {
-    this.hueService.getUser()
-      .then(user => {
-        // wrap this in ngZone.run because otherwise angular isn't detecting changes...
-        this.ngZone.run(() => {
-          if (user) {
-            this.connected = true
-            this.getLights()
-          } else {
-            this.connected = false
-          }
-        })
-      }, error => {
-        console.error('HopePage construct: error in getUser promise in ')
-      })
+     this.hueService
+       .findBridges()
+       .subscribe(bridges => {
+         this.bridges = bridges
+         this.selectedBridge = bridges[0]
+       })
   }
 
-  // for now connected just means there is a user already stored in the app so we don't have to create a new one,
-  // later will actually find bridge IPs and connect to bridge
+  /** Whether the app is currently connected to a bridge */
   public connected: boolean = false
-  public bridgeIp: string = bridgeIp
-  public lights = []
+
+  /** IP of currently selected (and probably connected) bridge */
+  public selectedBridge: string
+
+  /** Loaded after bridge is connected */
+  public bridges
+  public lights
   public weather
 
-  // eventually probably take entire state as param instead
+  /** (User input) Zip Code */
+  public zipCode
+
+  /**
+   * eventually probably take entire state as param instead
+   * @param hue
+     */
   public changeColor (hue: number): void {
     // find first reachable light bulb
     // light bulb IDs start at 1
@@ -52,33 +55,52 @@ export class HomePage {
       .subscribe(response => console.log('change color', response))
   }
 
-  /* Only called if the app didn't already store a user */
-  public createUser () {
-    this.hueService.createUser()
-      .subscribe(responses => {
-        let response = responses[0]
-        let alertMessage: string
-
-        if (response.success) {
-          this.connected = true
-          this.getLights()
-        } else if (response.error) {
-          if (response.error.description === 'link button not pressed') { // might be better to check for 'type === 101'
-            alertMessage = 'Press the link button on the bridge'
+  // dear god forgive me I will refactor this later
+  // yes this is a promise that sometimes returns an observable and sometimes doesn't :)
+  public connect (bridgeIp: string): void {
+    this.hueService.connect(bridgeIp)
+      .then((request: any) => {
+        this.ngZone.run(() => {
+          // it only returns an observable if a user had to be created
+          if (request.subscribe) {
+            request.subscribe(response => {
+              // user was created
+              if (response.success) {
+                this.connected = true
+                this.getLights()
+              } else if (response.error) {
+                this.connected = false
+                let alertMessage: string
+                if (response.error.description === 'link button not pressed') { // might be better to check for 'type === 101'
+                  alertMessage = 'Press the link button on the bridge'
+                } else {
+                  alertMessage = 'Error connecting to bridge'
+                }
+                let alert = Alert.create({
+                  title: 'Connect',
+                  subTitle: alertMessage,
+                  buttons: ['close']
+                })
+                this.nav.present(alert)
+              }
+            })
           } else {
-            alertMessage = 'Error creating user'
+            this.connected = true
+            this.getLights()
           }
-          let alert = Alert.create({
-            title: 'Connect',
-            subTitle: alertMessage,
-            buttons: ['close']
-          })
-          this.nav.present(alert)
-        }
+        })
+      },
+      error => {
+        console.error('error in connect promise, explicit function', error)
+        error.subscribe(e => console.error(e))
+      })
+      .catch(error => {
+        console.error('error in connect promise, catch', error)
       })
   }
 
   public getLights () {
+    this.lights = []
     this.hueService.getLights()
       .subscribe(lights => {
         Object.keys(lights).forEach((key) => {
