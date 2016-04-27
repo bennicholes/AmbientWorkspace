@@ -36,9 +36,10 @@ export class HomePage {
   public weather
 
   /** (User input) Zip Code */
-  public zipCode
+  public zipCode: number
 
   /**
+   * TODO: This and in general all light specific calls should probably just target group 0 (all lights)
    * eventually probably take entire state as param instead
    * @param hue
      */

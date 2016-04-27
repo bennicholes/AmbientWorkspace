@@ -13,33 +13,44 @@
     <ion-card>
       <ion-card-header>Bridge Connection</ion-card-header>
       <ion-card-content>
-        <button danger block *ngIf="!connected" (click)="connect(selectedBridge)">
-          <ion-icon name="power"></ion-icon>
-          Connect to Bridge:
+        <div *ngIf="!connected">
           <ion-item>
-            <ion-select [(ngModel)]="selectedBridge">
+            <ion-select class="bridge-select" [(ngModel)]="selectedBridge">
               <ion-option *ngFor="#bridge of bridges" [value]="bridge">{{bridge}}</ion-option>
             </ion-select>
           </ion-item>
-        </button>
-
+          <button danger block (click)="connect(selectedBridge)">
+            <ion-icon name="power"></ion-icon>
+            Connect to Bridge
+          </button>
+        </div>
         <div *ngIf="connected">
-          <button secondary block disabled="connected">
+          <button secondary disabled="connected">
             <ion-icon name="power"></ion-icon>
             Connected to Bridge: {{selectedBridge}}
           </button>
-          <ion-list>
-            <ion-item *ngFor="#light of lights">
-              {{light.name}}
-              <span *ngIf="light.state.reachable === true">- reachable</span>
-            </ion-item>
-          </ion-list>
-          <button (click)="turnOn()">On</button>
-          <button (click)="turnOff()">Off</button>
-          <button (click)="changeColor(46920)">BLUE</button>
-          <button (click)="changeColor(0)">RED</button>
         </div>
+      </ion-card-content>
+    </ion-card>
 
+    <ion-card *ngIf="connected">
+      <ion-card-header>
+        Lights
+        <span *ngFor="#light of lights" style="font-size: 2rem;">
+          <ion-icon name="bulb" *ngIf="light.state.reachable"></ion-icon>
+        </span>
+          <!--
+          <ion-icon name="bulb" *ngIf="!light.state.reachable" style="color: #ccc"></ion-icon>
+          -->
+      </ion-card-header>
+      <ion-card-content>
+        <button (click)="turnOn()">On</button>
+        <button (click)="turnOff()">Off</button>
+        <br />
+        <button (click)="changeColor(46920)">Blue</button>
+        <button (click)="changeColor(30000)">White</button>
+        <button (click)="changeColor(12500)">Yellow</button>
+        <button (click)="changeColor(0)">Red</button>
       </ion-card-content>
     </ion-card>
   </ion-slide>
