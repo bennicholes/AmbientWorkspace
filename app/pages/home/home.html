@@ -60,10 +60,11 @@
           <h1>Test</h1>
         </ion-card-header>
         <ion-card-content>
-          <button (click)="changeColor(46920)">Blue</button>
-          <button (click)="changeColor(30000)">White</button>
-          <button (click)="changeColor(12500)">Yellow</button>
-          <button (click)="changeColor(0)">Red</button>
+          <button (click)="setHue(46920)">Blue</button>
+          <button (click)="setHue(30000)">White</button>
+          <button (click)="setHue(12500)">Yellow</button>
+          <button (click)="setHue(0)">Red</button>
+          <button (click)="alert()">Alert</button>
         </ion-card-content>
       </ion-card>
 
@@ -88,19 +89,19 @@
           <button large>
             <ion-icon name="cloudy"></ion-icon>
           </button>
-          <button large (click)="changeColor(12500)">
+          <button large (click)="flash(12500)">
             <ion-icon name="sunny"></ion-icon>
           </button>
           <button large>
             <ion-icon name="partly-sunny"></ion-icon>
           </button>
-          <button large (click)="changeColor(36920)">
+          <button large (click)="flash(36920)">
             <ion-icon name="rainy"></ion-icon>
           </button>
           <button large>
             <ion-icon name="thunderstorm"></ion-icon>
           </button>
-          <button large (click)="changeColor(46920)">
+          <button large (click)="flash(46920)">
             <ion-icon name="snow"></ion-icon>
           </button>
           <button large>

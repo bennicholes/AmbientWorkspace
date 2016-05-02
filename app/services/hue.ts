@@ -61,16 +61,6 @@ export class HueService {
   }
 
   /**
-   * Updates color of all lights
-   * @param state {hue, sat, bri, on}
-   * @returns {Observable<{}>}
-     */
-  public changeColor (state: {}): Observable<{}> {
-    // http://www.developers.meethue.com/documentation/core-concepts
-    return this.put(this.user + '/groups/0/action', state)
-  }
-
-  /**
    * Might need to clean up all the users I've created...
    * @param username that is to be deleted
    * @returns {Observable<{}>}
@@ -142,35 +132,40 @@ export class HueService {
   }
 
   public turnOffLight (id: number): Observable<{}>  {
-    let body = {
-      on: false
-    }
-    return this.put(this.user + this.lightsUrl + id + '/state', body)
+    return this.updateLight(id, { on: false })
   }
 
   public turnOffLights (): Observable<{}>  {
-    let body = {
-      on: false
-    }
-    // first group contains all the lights
-    // note: max 1 req/s
-    return this.put(this.user + '/groups/0/action', body)
+    return this.updateLights({ on: false })
   }
 
   public turnOnLight (id: number): Observable<{}>  {
-    let body = {
-      on: true
-    }
-    return this.put(this.user + this.lightsUrl + id + '/state', body)
+    return this.updateLight(id, { on: true })
   }
 
   public turnOnLights (): Observable<{}>  {
-    let body = {
-      on: true
-    }
+    return this.updateLights({ on: true} )
+  }
+
+  /**
+   * Updates state of a specific light
+   * @id id of lightbulb
+   * @state new state
+   * @return {Observable<{}>}
+     */
+  public updateLight (id: number, state: {}): Observable<{}> {
+    return this.put(this.user + this.lightsUrl + id + '/state', state)
+  }
+
+  /**
+   * Updates state of all lights
+   * @note Max 1 req/s
+   * @param state http://www.developers.meethue.com/documentation/lights-api#16_set_light_state
+   * @returns {Observable<{}>}
+   */
+  public updateLights (state: {}): Observable<{}> {
     // first group contains all the lights
-    // note: max 1 req/s
-    return this.put(this.user + '/groups/0/action', body)
+    return this.put(this.user + '/groups/0/action', state)
   }
 
   /*
