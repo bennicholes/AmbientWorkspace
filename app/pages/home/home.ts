@@ -167,4 +167,13 @@ export class HomePage {
   private turnOff (): void {
     this.hueService.turnOffLights().subscribe()
   }
+
+  public copyrightAlert() {
+    let alert = Alert.create({
+      title: 'Information',
+      subTitle: 'Created By: Denis Morozov, Ben Nicholes, Saharath Kleips. ©Ambient Workspace 2016',
+      buttons: ['OK']
+    });
+    this.nav.present(alert);
+  }
 }
