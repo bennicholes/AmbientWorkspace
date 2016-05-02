@@ -86,30 +86,33 @@
             <ion-label>Weather Effects</ion-label>
             <ion-toggle checked="false" disabled="!weather || !zipCodeIsValid()"></ion-toggle>
           </ion-item>
-          <button large>
+          <button large (click)="alert(1000)">
             <ion-icon name="cloudy"></ion-icon>
           </button>
           <button large (click)="flash(12500)">
             <ion-icon name="sunny"></ion-icon>
           </button>
-          <button large>
+          <button large (click)="flashAlert(12500)">
             <ion-icon name="partly-sunny"></ion-icon>
           </button>
-          <button large (click)="flash(36920)">
+          <button large (click)="flash(42000)">
             <ion-icon name="rainy"></ion-icon>
           </button>
-          <button large>
+          <button large (click)="flashAlert(42000)">
             <ion-icon name="thunderstorm"></ion-icon>
           </button>
-          <button large (click)="flash(46920)">
+          <button large (click)="flash(36920)">
             <ion-icon name="snow"></ion-icon>
           </button>
-          <button large>
+          <!--
+          I don't think moon is a weather, and I don't think night cloudy should different from day cloudy
+          <button large click)="alert(1000)">
             <ion-icon name="cloudy-night"></ion-icon>
           </button>
-          <button large>
+          <button large (click)="alert(1000)">
             <ion-icon name="moon"></ion-icon>
           </button>
+          -->
         </ion-card-content>
       </ion-card>
     </ion-slide>
@@ -118,19 +121,19 @@
       <ion-card>
         <ion-card-header><h1>Notifications</h1></ion-card-header>
         <ion-card-content>
-          <button large>
+          <button large (click)="flash(25500)">
             <ion-icon name="mail"></ion-icon>
           </button>
-          <button large>
+          <button large (click)="flash(65280)">
             <ion-icon name="alert"></ion-icon>
           </button>
-          <button large>
+          <button large (click)="flash(44000)">
             <ion-icon name="notifications"></ion-icon>
           </button>
-          <button large>
+          <button large (click)="flash(56100)">
             <ion-icon name="calendar"></ion-icon>
           </button>
-          <button large>
+          <button large (click)="alert(5000)">
             <ion-icon name="call"></ion-icon>
           </button>
         </ion-card-content>

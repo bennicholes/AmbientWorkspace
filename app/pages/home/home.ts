@@ -121,6 +121,17 @@ export class HomePage {
   }
 
   /**
+   * Temporarily switches to a color then alerts a couple of times
+   * @hue
+   */
+  public flashAlert (hue: number): void {
+    this.flash(hue, 4000)
+    setTimeout(() => {
+      this.alert(2000)
+    }, 1000)
+  }
+
+  /**
    * Retrieves lights and puts all the reachable lights in the front of the array (for UI purposes)
    */
   public getLights (): void {
