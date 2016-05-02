@@ -43,9 +43,9 @@ export class HomePage {
 
   /** (User input) Zip Code */
   public zipCode: number
-  public lightsAreOn_: boolean = false
   // the getter/stter allows us to use two-way binding for the lights power toggle
-  // (allows the toggle to initialize correctly AND handle change)
+  // (just having an onChange handler (toggleLights) doesn't help initialize the toggle)
+  private lightsAreOn_: boolean = false
   get lightsAreOn (): boolean {
     return this.lightsAreOn_
   }
@@ -93,11 +93,11 @@ export class HomePage {
   }
 
   /**
-   * Temporarily set all lights to a specified color
+   * Temporarily set all lights to a specified color. Timeout less than ~2000ms doesn't seem to work.
    * @hue
-   * @timeout [optional] how long to flash a color for in ms, default 1000ms
+   * @timeout [optional] how long to flash a color for in ms, default 2000ms
    */
-  public flash (hue: number, timeout: number = 1000): void {
+  public flash (hue: number, timeout: number = 2000): void {
     this.hueService
       .getLights()
       .subscribe(lights => {
