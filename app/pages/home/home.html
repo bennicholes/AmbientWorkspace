@@ -21,7 +21,7 @@
                 <ion-option *ngFor="#bridge of bridges" [value]="bridge">{{bridge}}</ion-option>
               </ion-select>
             </ion-item>
-            <button danger block (click)="connect(selectedBridge)">
+            <button danger block disabled="!bridges" (click)="connect(selectedBridge)">
               <ion-icon name="power"></ion-icon>
               Connect to Bridge
             </button>
