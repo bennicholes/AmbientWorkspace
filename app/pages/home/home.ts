@@ -43,7 +43,15 @@ export class HomePage {
 
   /** (User input) Zip Code */
   public zipCode: number
-  public lightsAreOn: boolean = false
+  public lightsAreOn_: boolean = false
+  // the getter/stter allows us to use two-way binding for the lights power toggle
+  // (allows the toggle to initialize correctly AND handle change)
+  get lightsAreOn (): boolean {
+    return this.lightsAreOn_
+  }
+  set lightsAreOn (on: boolean) {
+    this.toggleLights()
+  }
 
   /**
    * Sends an "alert" to all the lights (they briefly dim in and out). Alerts only once if time
@@ -133,11 +141,8 @@ export class HomePage {
         lights
           .filter(light => light.state.reachable)
           .forEach((light) => {
-            console.log("for each", light)
             if (light.state.on) {
-              this.ngZone.run(() => {
-                this.lightsAreOn = true
-              })
+              this.lightsAreOn_ = true
             }
         })
       })
@@ -173,12 +178,12 @@ export class HomePage {
    * Turns lights on/off
    */
   public toggleLights(): void {
-    if (this.lightsAreOn) {
+    if (this.lightsAreOn_) {
       this.hueService.turnOffLights().subscribe()
     } else {
       this.hueService.turnOnLights().subscribe()
     }
-    this.lightsAreOn = !this.lightsAreOn
+    this.lightsAreOn_ = !this.lightsAreOn_
   }
 
   /**
