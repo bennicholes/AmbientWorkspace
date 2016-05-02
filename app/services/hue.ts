@@ -36,7 +36,14 @@ export class HueService {
   /*
     Public methods
    */
-  public connect (bridgeIp: string) {
+
+  /**
+   * Connects to specified bridge
+   * TODO: refactor
+   * @param bridgeIp
+   * @returns {Promise<T>|Promise<R>|Promise}
+     */
+  public connect (bridgeIp: string): Promise<any> {
     return new Promise ((resolve, reject) => {
       this.storage
         .get(bridgeIp)
@@ -53,9 +60,14 @@ export class HueService {
     })
   }
 
-  public changeColor (id: number, state: {}): Observable<{}>  {
+  /**
+   * Updates color of all lights
+   * @param state {hue, sat, bri, on}
+   * @returns {Observable<{}>}
+     */
+  public changeColor (state: {}): Observable<{}> {
     // http://www.developers.meethue.com/documentation/core-concepts
-    return this.put(this.user + this.lightsUrl + id + '/state', state)
+    return this.put(this.user + '/groups/0/action', state)
   }
 
   /**
@@ -90,8 +102,15 @@ export class HueService {
     return this.get(this.user)
   }
 
-  public getLights (): Observable<{}> {
+  /**
+   * Returns an array of lights
+   * @returns {Observable<[any]>}
+     */
+  public getLights (): Observable<any[]> {
     return this.get(this.user + this.lightsUrl)
+      .map(lights => {
+        return Object.keys(lights).map(key => lights[key])
+      })
   }
 
   public getLight (id: number): Observable<{}> {

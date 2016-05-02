@@ -1,15 +1,21 @@
-import {Page, Alert, NavController} from 'ionic-angular'
+import { Page, Alert, NavController } from 'ionic-angular'
+import { NgZone } from 'angular2/core'
 // import { Observable } from 'rxjs/Rx'
-import {NgZone} from 'angular2/core'
-import {HueService} from '../../services/hue'
-import {WeatherService} from '../../services/weather'
-
+import { HueService } from '../../services/hue'
+import { WeatherService } from '../../services/weather'
 
 @Page({
   templateUrl: 'build/pages/home/home.html',
   providers: [HueService, WeatherService]
 })
 export class HomePage {
+  /**
+   * Makes API call to find bridges. Initializes the first bridge as the selected bridge.
+   * @param hueService
+   * @param weatherService
+   * @param nav
+   * @param ngZone
+     */
   constructor(
     private hueService: HueService,
     private weatherService: WeatherService,
@@ -27,7 +33,7 @@ export class HomePage {
   /** Whether the app is currently connected to a bridge */
   public connected: boolean = false
 
-  /** IP of currently selected (and probably connected) bridge */
+  /** IP of currently selected bridge. This is therefore the IP of the connect bridge. */
   public selectedBridge: string
 
   /** Loaded after bridge is connected */
@@ -39,16 +45,12 @@ export class HomePage {
   public zipCode: number
 
   /**
-   * TODO: This and in general all light specific calls should probably just target group 0 (all lights)
-   * eventually probably take entire state as param instead
+   * Change color of all the light bulbs. Should probably be named "setHue"
    * @param hue
      */
   public changeColor (hue: number): void {
-    // find first reachable light bulb
-    // light bulb IDs start at 1
-    let id: number = 1 + this.lights.findIndex(light => light.state.reachable)
     this.hueService
-      .changeColor(id, {
+      .changeColor({
         bri: 255,
         sat: 255,
         hue
@@ -56,8 +58,13 @@ export class HomePage {
       .subscribe(response => console.log('change color', response))
   }
 
-  // dear god forgive me I will refactor this later
-  // yes this is a promise that sometimes returns an observable and sometimes doesn't :)
+  /**
+   * Connect to specified bridge
+   * TODO:
+   *  dear god forgive me I will refactor this later
+   *  yes this is a promise that sometimes returns an observable and sometimes doesn't :)
+   * @param bridgeIp
+     */
   public connect (bridgeIp: string): void {
     this.hueService.connect(bridgeIp)
       .then((request: any) => {
@@ -92,38 +99,53 @@ export class HomePage {
         })
       },
       error => {
-        console.error('error in connect promise, explicit function', error)
+        console.error('error in connect promise', error)
         error.subscribe(e => console.error(e))
       })
       .catch(error => {
-        console.error('error in connect promise, catch', error)
+        console.error('error in connect promise caught', error)
       })
   }
 
-  public getLights () {
-    this.lights = []
+  /**
+   * Retrieves lights and puts all the reachable lights in the front of the array (for UI purposes)
+   */
+  public getLights (): void {
     this.hueService.getLights()
-      .subscribe(lights => {
-        Object.keys(lights).forEach((key) => {
-          this.lights.push(lights[key])
-        })
+      .subscribe((lights: [any]) => {
+        console.log(lights)
+        this.lights = lights
+          .sort((a, b): number => {
+            if (a.state.reachable && !b.state.reachable) return -1 // a < b
+            else if (!a.state.reachable && b.state.reachable) return 1 // a > b
+            else return 0 // a = b
+          })
       })
   }
 
-  public getWeather (zipCode: number = 89434) {
+  /**
+   * Get weather from API
+   * @param zipCode
+     */
+  public getWeather (zipCode: number = 89557): void {
     this.weatherService.getWeather(zipCode)
       .subscribe(weather => {
         console.log('Weather response', weather)
         this.weather = weather
       })
   }
-  public turnOn () {
-    this.hueService.turnOnLights()
-      .subscribe((response) => console.log('turn on lights', response))
+
+  /**
+   * Turn on all lights
+   */
+  public turnOn (): void {
+    this.hueService.turnOnLights().subscribe()
   }
 
-  public turnOff () {
-    this.hueService.turnOffLights()
-      .subscribe((response) => console.log('turn off lights', response))
+  /**
+   * Turn off all lights
+   */
+  public turnOff (): void {
+    this.hueService.turnOffLights().subscribe()
   }
 }
