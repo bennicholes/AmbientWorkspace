@@ -8,7 +8,12 @@
   <ion-slides pager>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     <ion-slide style="background-color: #67eebd" *ngIf="!connected">
+=======
+    <ion-slide style="background-color: #67eebd">
+
+>>>>>>> master
 =======
     <ion-slide style="background-color: #67eebd">
 
@@ -31,7 +36,11 @@
             </button>
           </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <!-- <div *ngIf="connected">
+=======
+          <div *ngIf="connected">
+>>>>>>> master
 =======
           <div *ngIf="connected">
 >>>>>>> master
@@ -39,6 +48,7 @@
               <ion-icon name="power"></ion-icon>
               Connected to Bridge: {{selectedBridge}}
             </button>
+<<<<<<< HEAD
 <<<<<<< HEAD
           </div> -->
         </ion-card-content>
@@ -60,6 +70,8 @@
 
         <!-- <ion-card-content>
 =======
+=======
+>>>>>>> master
           </div>
         </ion-card-content>
       </ion-card>
@@ -75,6 +87,9 @@
           </h1>
         </ion-card-header>
         <ion-card-content>
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
           <ion-item>
             <ion-label>
@@ -82,6 +97,7 @@
             </ion-label>
             <ion-toggle (change)="toggleLights()"></ion-toggle>
           </ion-item>
+<<<<<<< HEAD
 <<<<<<< HEAD
         </ion-card-content> -->
 
@@ -252,6 +268,72 @@
       <ion-card>
         <ion-card-header><h1>Notifications</h1></ion-card-header>
 >>>>>>> master
+=======
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card *ngIf="connected">
+        <ion-card-header>
+          <h1>Test</h1>
+        </ion-card-header>
+        <ion-card-content>
+          <button (click)="changeColor(46920)">Blue</button>
+          <button (click)="changeColor(30000)">White</button>
+          <button (click)="changeColor(12500)">Yellow</button>
+          <button (click)="changeColor(0)">Red</button>
+        </ion-card-content>
+      </ion-card>
+
+    </ion-slide>
+
+    <ion-slide *ngIf="connected" style="background-color: #bb96ff">
+      <ion-card>
+        <ion-card-header>
+          <h1>Weather</h1>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label floating>Zip Code</ion-label>
+            <ion-input type="number" [(ngModel)]="zipCode"></ion-input>
+          </ion-item>
+        </ion-card-content>
+        <ion-card-content>
+          <ion-item>
+            <ion-label>Weather Effects</ion-label>
+            <ion-toggle checked="false" disabled="!weather || !zipCodeIsValid()"></ion-toggle>
+          </ion-item>
+          <button large>
+            <ion-icon name="cloudy"></ion-icon>
+          </button>
+          <button large (click)="changeColor(12500)">
+            <ion-icon name="sunny"></ion-icon>
+          </button>
+          <button large>
+            <ion-icon name="partly-sunny"></ion-icon>
+          </button>
+          <button large (click)="changeColor(36920)">
+            <ion-icon name="rainy"></ion-icon>
+          </button>
+          <button large>
+            <ion-icon name="thunderstorm"></ion-icon>
+          </button>
+          <button large (click)="changeColor(46920)">
+            <ion-icon name="snow"></ion-icon>
+          </button>
+          <button large>
+            <ion-icon name="cloudy-night"></ion-icon>
+          </button>
+          <button large>
+            <ion-icon name="moon"></ion-icon>
+          </button>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+
+    <ion-slide *ngIf="connected" style="background-color: #cff381">
+      <ion-card>
+        <ion-card-header><h1>Notifications</h1></ion-card-header>
+>>>>>>> master
         <ion-card-content>
           <button large>
             <ion-icon name="mail"></ion-icon>
@@ -273,8 +355,12 @@
     </ion-slide>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     <!-- NIGHTSHIFT -->
     <ion-slide style="background-color: #ed6d79" *ngIf="connected">
+=======
+    <ion-slide *ngIf="connected" style="background-color: #ed6d79">
+>>>>>>> master
 =======
     <ion-slide *ngIf="connected" style="background-color: #ed6d79">
 >>>>>>> master
