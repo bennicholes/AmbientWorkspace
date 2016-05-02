@@ -37,7 +37,7 @@ export class HomePage {
   public selectedBridge: string = "192.168.1.126"
 
   /** Loaded after bridge is connected */
-  public bridges
+  public bridges = ["192.168.1.126"]
   public lights
   public weather
 
