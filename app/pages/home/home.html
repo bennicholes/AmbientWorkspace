@@ -11,7 +11,9 @@
 
   <ion-slide style="background-color: #67eebd">
     <ion-card>
-      <ion-card-header>Bridge Connection</ion-card-header>
+      <ion-card-header>
+        <h1>Bridge Connection</h1>
+      </ion-card-header>
       <ion-card-content>
         <div *ngIf="!connected">
           <ion-item>
@@ -35,44 +37,56 @@
 
     <ion-card *ngIf="connected">
       <ion-card-header>
-        Lights
-        <span *ngFor="#light of lights" style="font-size: 2rem;">
-          <ion-icon name="bulb" *ngIf="light.state.reachable"></ion-icon>
-        </span>
-          <!--
-          <ion-icon name="bulb" *ngIf="!light.state.reachable" style="color: #ccc"></ion-icon>
-          -->
+        <h1>
+          Lights
+          <span class="lights" *ngFor="#light of lights">
+            <ion-icon name="bulb" *ngIf="light.state.reachable"></ion-icon>
+            <ion-icon name="bulb" *ngIf="!light.state.reachable" style="color: #ccc"></ion-icon>
+          </span>
+        </h1>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item>
+          <ion-label>
+            <ion-icon name="power"></ion-icon>
+          </ion-label>
+          <ion-toggle (change)="toggleLights()"></ion-toggle>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="connected">
+      <ion-card-header>
+        <h1>Test</h1>
       </ion-card-header>
       <ion-card-content>
-        <button (click)="turnOn()">On</button>
-        <button (click)="turnOff()">Off</button>
-        <br />
         <button (click)="changeColor(46920)">Blue</button>
         <button (click)="changeColor(30000)">White</button>
         <button (click)="changeColor(12500)">Yellow</button>
         <button (click)="changeColor(0)">Red</button>
       </ion-card-content>
     </ion-card>
+
   </ion-slide>
 
   <ion-slide style="background-color: #bb96ff">
     <ion-card>
-      <ion-card-header>Weather</ion-card-header>
+      <ion-card-header>
+        <h1>Weather</h1>
+      </ion-card-header>
       <ion-card-content>
-        Current Weather:
+        <ion-item>
+          <ion-label floating>Zip Code</ion-label>
+          <ion-input type="number" [(ngModel)]="zipCode"></ion-input>
+        </ion-item>
       </ion-card-content>
       <ion-card-content>
         <ion-item>
-          <ion-label>Weather Sync</ion-label>
-          <ion-toggle checked="true"></ion-toggle>
+          <ion-label>Weather Effects</ion-label>
+          <ion-toggle checked="false" disabled="!weather || !zipCodeIsValid()"></ion-toggle>
         </ion-item>
-        <!--
-        <ion-item>
-          <ion-label stacked>Zip Code</ion-label>
-          <ion-input type="number" [(ngModel)]="zipCode"></ion-input>
-        </ion-item>
-        <button (click)="getWeather(zipCode)">Get Weather</button>
-        -->
+        <h2>Preview</h2>
         <button large>
           <ion-icon name="cloudy"></ion-icon>
         </button>
@@ -103,7 +117,7 @@
 
     <ion-slide style="background-color: #cff381">
       <ion-card>
-        <ion-card-header>Push Notifications</ion-card-header>
+        <ion-card-header><h1>Push Notifications</h1></ion-card-header>
         <ion-card-content>
           <button large>
             <ion-icon name="mail"></ion-icon>

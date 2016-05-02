@@ -43,6 +43,7 @@ export class HomePage {
 
   /** (User input) Zip Code */
   public zipCode: number
+  public lightsAreOn: boolean = false
 
   /**
    * Change color of all the light bulbs. Should probably be named "setHue"
@@ -120,6 +121,15 @@ export class HomePage {
             else if (!a.state.reachable && b.state.reachable) return 1 // a > b
             else return 0 // a = b
           })
+
+        // set default power state
+        lights
+          .filter(light => light.state.reachable)
+          .forEach((light) => {
+            if (light.state.on) {
+              this.lightsAreOn = true
+            }
+        })
       })
   }
 
@@ -135,17 +145,26 @@ export class HomePage {
       })
   }
 
+  public toggleLights(): void {
+    if (this.lightsAreOn) {
+      this.turnOff()
+    } else {
+      this.turnOn()
+    }
+    this.lightsAreOn = !this.lightsAreOn
+  }
+
   /**
    * Turn on all lights
    */
-  public turnOn (): void {
+  private turnOn (): void {
     this.hueService.turnOnLights().subscribe()
   }
 
   /**
    * Turn off all lights
    */
-  public turnOff (): void {
+  private turnOff (): void {
     this.hueService.turnOffLights().subscribe()
   }
 }
