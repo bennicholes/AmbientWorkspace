@@ -34,7 +34,7 @@ export class HomePage {
   public connected: boolean = false
 
   /** IP of currently selected bridge. This is therefore the IP of the connect bridge. */
-  public selectedBridge: string
+  public selectedBridge: string = "192.168.1.126"
 
   /** Loaded after bridge is connected */
   public bridges
