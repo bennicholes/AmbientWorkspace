@@ -41,17 +41,14 @@ export class HomePage {
   public lights
   public weather
 
-  /** (User input) Zip Code */
+  /** (User input) */
   public zipCode: number
-  // the getter/stter allows us to use two-way binding for the lights power toggle
-  // (just having an onChange handler (toggleLights) doesn't help initialize the toggle)
   private lightsAreOn_: boolean = false
-  get lightsAreOn (): boolean {
-    return this.lightsAreOn_
-  }
-  set lightsAreOn (on: boolean) {
-    this.toggleLights()
-  }
+  get lightsAreOn (): boolean { return this.lightsAreOn_ }
+  set lightsAreOn (x) { this.toggleLights() }
+  public weatherIsActive: boolean = false
+  public noticationsAreActive: boolean = false
+  public nightShiftIsActive: boolean = false
 
   /**
    * Sends an "alert" to all the lights (they briefly dim in and out). Alerts only once if time

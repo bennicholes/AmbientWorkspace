@@ -76,15 +76,15 @@
           <h1>Weather</h1>
         </ion-card-header>
         <ion-card-content>
+          <!-- I think we should ask for it on toggleOn
           <ion-item>
             <ion-label floating>Zip Code</ion-label>
             <ion-input type="number" [(ngModel)]="zipCode"></ion-input>
           </ion-item>
-        </ion-card-content>
-        <ion-card-content>
+          -->
           <ion-item>
-            <ion-label>Weather Effects</ion-label>
-            <ion-toggle checked="false" disabled="!weather || !zipCodeIsValid()"></ion-toggle>
+            <ion-label>Active</ion-label>
+            <ion-toggle [(ngModel)]="weatherIsActive"></ion-toggle>
           </ion-item>
           <button large (click)="alert(1000)">
             <ion-icon name="cloudy"></ion-icon>
@@ -121,6 +121,10 @@
       <ion-card>
         <ion-card-header><h1>Notifications</h1></ion-card-header>
         <ion-card-content>
+          <ion-item>
+            <ion-label>Active</ion-label>
+            <ion-toggle [(ngModel)]="notificationsAreActive"></ion-toggle>
+          </ion-item>
           <button large (click)="flash(25500)">
             <ion-icon name="mail"></ion-icon>
           </button>
@@ -148,8 +152,8 @@
         <ion-card-content>
 
           <ion-item>
-            <ion-label>Activated</ion-label>
-            <ion-toggle checked="false"></ion-toggle>
+            <ion-label>Active</ion-label>
+            <ion-toggle [(ngModel)]="nightShiftIsActive"></ion-toggle>
           </ion-item>
 
           <div class="item range range-positive">
