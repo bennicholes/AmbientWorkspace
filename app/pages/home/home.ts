@@ -3,7 +3,6 @@ import { NgZone } from 'angular2/core'
 // import { Observable } from 'rxjs/Rx'
 import { HueService } from '../../services/hue'
 import { WeatherService } from '../../services/weather'
-import _ from 'underscore'
 
 @Page({
   templateUrl: 'build/pages/home/home.html',
