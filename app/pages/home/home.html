@@ -5,10 +5,14 @@
 </ion-toolbar>
 
 <ion-content class="home">
-
   <ion-slides pager>
 
+<<<<<<< HEAD
     <ion-slide style="background-color: #67eebd" *ngIf="!connected">
+=======
+    <ion-slide style="background-color: #67eebd">
+
+>>>>>>> master
       <ion-card>
         <ion-card-header>
           <h1>Bridge Connection</h1>
@@ -26,11 +30,16 @@
               Connect to Bridge
             </button>
           </div>
+<<<<<<< HEAD
           <!-- <div *ngIf="connected">
+=======
+          <div *ngIf="connected">
+>>>>>>> master
             <button secondary disabled="connected">
               <ion-icon name="power"></ion-icon>
               Connected to Bridge: {{selectedBridge}}
             </button>
+<<<<<<< HEAD
           </div> -->
         </ion-card-content>
       </ion-card>
@@ -50,12 +59,30 @@
         </ion-card-header>
 
         <!-- <ion-card-content>
+=======
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card *ngIf="connected">
+        <ion-card-header>
+          <h1>
+            Lights
+            <span class="lights" *ngFor="#light of lights">
+              <ion-icon name="bulb" *ngIf="light.state.reachable"></ion-icon>
+              <ion-icon name="bulb" *ngIf="!light.state.reachable" style="color: #ccc"></ion-icon>
+            </span>
+          </h1>
+        </ion-card-header>
+        <ion-card-content>
+>>>>>>> master
           <ion-item>
             <ion-label>
               <ion-icon name="power"></ion-icon>
             </ion-label>
             <ion-toggle (change)="toggleLights()"></ion-toggle>
           </ion-item>
+<<<<<<< HEAD
         </ion-card-content> -->
 
         <ion-card-header>
@@ -143,6 +170,12 @@
       </ion-card>
 
       <!-- <ion-card>
+=======
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card *ngIf="connected">
+>>>>>>> master
         <ion-card-header>
           <h1>Test</h1>
         </ion-card-header>
@@ -152,11 +185,19 @@
           <button (click)="changeColor(12500)">Yellow</button>
           <button (click)="changeColor(0)">Red</button>
         </ion-card-content>
+<<<<<<< HEAD
       </ion-card> -->
     </ion-slide>
 
     <!-- WEATHER -->
     <ion-slide style="background-color: #bb96ff" *ngIf="connected">
+=======
+      </ion-card>
+
+    </ion-slide>
+
+    <ion-slide *ngIf="connected" style="background-color: #bb96ff">
+>>>>>>> master
       <ion-card>
         <ion-card-header>
           <h1>Weather</h1>
@@ -200,11 +241,17 @@
       </ion-card>
     </ion-slide>
 
+<<<<<<< HEAD
     <!-- NOTIFICATIONS -->
     <ion-slide style="background-color: #cff381" *ngIf="connected">
       <ion-card>
         <ion-card-header>
           <h1>Push Notifications</h1></ion-card-header>
+=======
+    <ion-slide *ngIf="connected" style="background-color: #cff381">
+      <ion-card>
+        <ion-card-header><h1>Notifications</h1></ion-card-header>
+>>>>>>> master
         <ion-card-content>
           <button large>
             <ion-icon name="mail"></ion-icon>
@@ -225,10 +272,16 @@
       </ion-card>
     </ion-slide>
 
+<<<<<<< HEAD
     <!-- NIGHTSHIFT -->
     <ion-slide style="background-color: #ed6d79" *ngIf="connected">
+=======
+    <ion-slide *ngIf="connected" style="background-color: #ed6d79">
+>>>>>>> master
       <ion-card>
-        <ion-card-header>NightShift</ion-card-header>
+        <ion-card-header>
+          <h1>NightShift</h1>
+        </ion-card-header>
         <ion-card-content>
 
           <ion-item>
@@ -245,5 +298,4 @@
     </ion-slide>
 
   </ion-slides>
-
 </ion-content>
