@@ -17,6 +17,7 @@
       <ion-card-content>
         <div *ngIf="!connected">
           <ion-item>
+            <ion-label>Bridge</ion-label>
             <ion-select class="bridge-select" [(ngModel)]="selectedBridge">
               <ion-option *ngFor="#bridge of bridges" [value]="bridge">{{bridge}}</ion-option>
             </ion-select>
@@ -86,7 +87,6 @@
           <ion-label>Weather Effects</ion-label>
           <ion-toggle checked="false" disabled="!weather || !zipCodeIsValid()"></ion-toggle>
         </ion-item>
-        <h2>Preview</h2>
         <button large>
           <ion-icon name="cloudy"></ion-icon>
         </button>
@@ -151,7 +151,7 @@
           <div class="item range range-positive">
             <input type="range" name="brightness" min="0" max="100" value="5">
           </div>
-        
+
         </ion-card-content>
       </ion-card>
     </ion-slide>

@@ -1,6 +1,8 @@
 .home {
   .bridge-select {
     margin: 0 auto;
+    // Looks fine on emulator and browser but text gets cut off on phones otherwise
+    min-width: 50%;
   }
   .lights {
     margin-left: 0.20em;

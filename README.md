@@ -19,7 +19,6 @@ npm install -g cordova
 
 Get the [Android SDK](http://developer.android.com/sdk/index.html).
 Beginning of [this article](https://fedoramagazine.org/start-developing-android-apps-on-fedora-in-10-minutes/) is helpful.
-Currently using API 23 but need to figure out how to go down to 22 if we want to test it on our phones.
 
 **3) Emulator** (Optional, can use phone instead)
 
