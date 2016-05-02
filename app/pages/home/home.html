@@ -156,8 +156,11 @@
             <ion-toggle [(ngModel)]="nightShiftIsActive"></ion-toggle>
           </ion-item>
 
-          <div class="item range range-positive">
-            <input type="range" name="brightness" min="0" max="100" value="5">
+          <div>
+            <ion-icon name="moon"></ion-icon>
+            <input type="range" [(ngModel)]="inputCt" min="153" max="500"
+            style="width: 70%">
+            <ion-icon name="sunny"></ion-icon>
           </div>
 
         </ion-card-content>

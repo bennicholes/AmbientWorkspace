@@ -3,6 +3,7 @@ import { NgZone } from 'angular2/core'
 // import { Observable } from 'rxjs/Rx'
 import { HueService } from '../../services/hue'
 import { WeatherService } from '../../services/weather'
+import _ from 'underscore'
 
 @Page({
   templateUrl: 'build/pages/home/home.html',
@@ -49,6 +50,32 @@ export class HomePage {
   public weatherIsActive: boolean = false
   public noticationsAreActive: boolean = false
   public nightShiftIsActive: boolean = false
+  private inputCt_: number = 153
+  get inputCt (): number { return this.inputCt_ }
+  set inputCt (x) {
+    console.log(x)
+    this.inputCt_ = x
+    let fnc = () => {
+      this.setCt(x)
+    }
+    let lazyUpdate = this.debounce(fnc, 2000, false)
+    lazyUpdate()
+  }
+
+  private debounce(func, wait, immediate) {
+    let timeout;
+    return function() {
+      let context = this, args = arguments;
+      let later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      let callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  };
 
   /**
    * Sends an "alert" to all the lights (they briefly dim in and out). Alerts only once if time
@@ -178,6 +205,15 @@ export class HomePage {
         bri: 255,
         sat: 255,
         hue
+      })
+      .subscribe()
+  }
+
+  public setCt(ct: number): void {
+    console.log("SET CT CALLED")
+    this.hueService
+      .updateLights({
+        ct
       })
       .subscribe()
   }
