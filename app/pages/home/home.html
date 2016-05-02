@@ -1,4 +1,3 @@
-
 <ion-toolbar dark>
   <ion-title>
     Ambient Workspace
@@ -9,115 +8,203 @@
 
   <ion-slides pager>
 
-  <ion-slide style="background-color: #67eebd">
-    <ion-card>
-      <ion-card-header>
-        <h1>Bridge Connection</h1>
-      </ion-card-header>
-      <ion-card-content>
-        <div *ngIf="!connected">
-          <ion-item>
-            <ion-label>Bridge</ion-label>
-            <ion-select class="bridge-select" [(ngModel)]="selectedBridge">
-              <ion-option *ngFor="#bridge of bridges" [value]="bridge">{{bridge}}</ion-option>
-            </ion-select>
-          </ion-item>
-          <button danger block (click)="connect(selectedBridge)">
-            <ion-icon name="power"></ion-icon>
-            Connect to Bridge
-          </button>
-        </div>
-        <div *ngIf="connected">
-          <button secondary disabled="connected">
-            <ion-icon name="power"></ion-icon>
-            Connected to Bridge: {{selectedBridge}}
-          </button>
-        </div>
-      </ion-card-content>
-    </ion-card>
+    <ion-slide style="background-color: #67eebd" *ngIf="!connected">
+      <ion-card>
+        <ion-card-header>
+          <h1>Bridge Connection</h1>
+        </ion-card-header>
+        <ion-card-content>
+          <div *ngIf="!connected">
+            <ion-item>
+              <ion-label>Bridge</ion-label>
+              <ion-select class="bridge-select" [(ngModel)]="selectedBridge">
+                <ion-option *ngFor="#bridge of bridges" [value]="bridge">{{bridge}}</ion-option>
+              </ion-select>
+            </ion-item>
+            <button danger block (click)="connect(selectedBridge)">
+              <ion-icon name="power"></ion-icon>
+              Connect to Bridge
+            </button>
+          </div>
+          <!-- <div *ngIf="connected">
+            <button secondary disabled="connected">
+              <ion-icon name="power"></ion-icon>
+              Connected to Bridge: {{selectedBridge}}
+            </button>
+          </div> -->
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
 
-    <ion-card *ngIf="connected">
-      <ion-card-header>
-        <h1>
+    <!-- LIGHTS -->
+    <ion-slide style="background-color: #fcdca9" ngIf="connected">
+      <ion-card>
+        <ion-card-header>
+          <h1>
           Lights
           <span class="lights" *ngFor="#light of lights">
             <ion-icon name="bulb" *ngIf="light.state.reachable"></ion-icon>
             <ion-icon name="bulb" *ngIf="!light.state.reachable" style="color: #ccc"></ion-icon>
           </span>
         </h1>
-      </ion-card-header>
+        </ion-card-header>
 
-      <ion-card-content>
-        <ion-item>
-          <ion-label>
-            <ion-icon name="power"></ion-icon>
-          </ion-label>
-          <ion-toggle (change)="toggleLights()"></ion-toggle>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
+        <!-- <ion-card-content>
+          <ion-item>
+            <ion-label>
+              <ion-icon name="power"></ion-icon>
+            </ion-label>
+            <ion-toggle (change)="toggleLights()"></ion-toggle>
+          </ion-item>
+        </ion-card-content> -->
 
-    <ion-card *ngIf="connected">
-      <ion-card-header>
-        <h1>Test</h1>
-      </ion-card-header>
-      <ion-card-content>
-        <button (click)="changeColor(46920)">Blue</button>
-        <button (click)="changeColor(30000)">White</button>
-        <button (click)="changeColor(12500)">Yellow</button>
-        <button (click)="changeColor(0)">Red</button>
-      </ion-card-content>
-    </ion-card>
+        <ion-card-header>
+          <h1>Lights</h1>
+        </ion-card-header>
+        <ion-card-content>
+          <button large (click)="toggleLights()">
+            1<ion-icon name="power"></ion-icon>
+          </button>
+          <button large (click)="toggleLights()">
+            2<ion-icon name="power"></ion-icon>
+          </button>
+          <button large (click)="toggleLights()">
+            3<ion-icon name="power"></ion-icon>
+          </button>
+        </ion-card-content>
+      </ion-card>
 
-  </ion-slide>
+      <ion-card style="background-color: #27a4dd">
+        <ion-card-header>
+          <h1>Blue</h1>
+        </ion-card-header>
+        <ion-card-content>
+          <button (click)="changeColor(46920)">
+            1<ion-icon name="bulb"></ion-icon>
+          </button>
+          <button (click)="changeColor(46920)">
+            2<ion-icon name="bulb"></ion-icon>
+          </button>
+          <button (click)="changeColor(46920)">
+            3<ion-icon name="bulb"></ion-icon>
+          </button>
+        </ion-card-content>
+      </ion-card>
 
-  <ion-slide style="background-color: #bb96ff">
-    <ion-card>
-      <ion-card-header>
-        <h1>Weather</h1>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-item>
-          <ion-label floating>Zip Code</ion-label>
-          <ion-input type="number" [(ngModel)]="zipCode"></ion-input>
-        </ion-item>
-      </ion-card-content>
-      <ion-card-content>
-        <ion-item>
-          <ion-label>Weather Effects</ion-label>
-          <ion-toggle checked="false" disabled="!weather || !zipCodeIsValid()"></ion-toggle>
-        </ion-item>
-        <button large>
-          <ion-icon name="cloudy"></ion-icon>
-        </button>
-        <button large (click)="changeColor(12500)">
-          <ion-icon name="sunny"></ion-icon>
-        </button>
-        <button large>
-          <ion-icon name="partly-sunny"></ion-icon>
-        </button>
-        <button large (click)="changeColor(36920)">
-          <ion-icon name="rainy"></ion-icon>
-        </button>
-        <button large>
-          <ion-icon name="thunderstorm"></ion-icon>
-        </button>
-        <button large (click)="changeColor(46920)">
-          <ion-icon name="snow"></ion-icon>
-        </button>
-        <button large>
-          <ion-icon name="cloudy-night"></ion-icon>
-        </button>
-        <button large>
-          <ion-icon name="moon"></ion-icon>
-        </button>
-      </ion-card-content>
-    </ion-card>
-  </ion-slide>
+      <ion-card style="background-color: #ffffff">
+        <ion-card-header>
+          <h1>White</h1>
+        </ion-card-header>
+        <ion-card-content>
+          <button (click)="changeColor(30000)">
+            1<ion-icon name="bulb"></ion-icon>
+          </button>
+          <button (click)="changeColor(30000)">
+            2<ion-icon name="bulb"></ion-icon>
+          </button>
+          <button (click)="changeColor(30000)">
+            3<ion-icon name="bulb"></ion-icon>
+          </button>
+        </ion-card-content>
+      </ion-card>
 
-    <ion-slide style="background-color: #cff381">
+      <ion-card style="background-color: #ffffba">
+        <ion-card-header>
+          <h1>Yellow</h1>
+        </ion-card-header>
+        <ion-card-content>
+          <button (click)="changeColor(12500)">
+            1<ion-icon name="bulb"></ion-icon>
+          </button>
+          <button (click)="changeColor(12500)">
+            2<ion-icon name="bulb"></ion-icon>
+          </button>
+          <button (click)="changeColor(12500)">
+            3<ion-icon name="bulb"></ion-icon>
+          </button>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card style="background-color: #f1646c">
+        <ion-card-header>
+          <h1>Red</h1>
+        </ion-card-header>
+        <ion-card-content>
+          <button (click)="changeColor(0)">
+            1<ion-icon name="bulb"></ion-icon>
+          </button>
+          <button (click)="changeColor(0)">
+            2<ion-icon name="bulb"></ion-icon>
+          </button>
+          <button (click)="changeColor(0)">
+            3<ion-icon name="bulb"></ion-icon>
+          </button>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- <ion-card>
+        <ion-card-header>
+          <h1>Test</h1>
+        </ion-card-header>
+        <ion-card-content>
+          <button (click)="changeColor(46920)">Blue</button>
+          <button (click)="changeColor(30000)">White</button>
+          <button (click)="changeColor(12500)">Yellow</button>
+          <button (click)="changeColor(0)">Red</button>
+        </ion-card-content>
+      </ion-card> -->
+    </ion-slide>
+
+    <!-- WEATHER -->
+    <ion-slide style="background-color: #bb96ff" *ngIf="connected">
       <ion-card>
-        <ion-card-header><h1>Push Notifications</h1></ion-card-header>
+        <ion-card-header>
+          <h1>Weather</h1>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label floating>Zip Code</ion-label>
+            <ion-input type="number" [(ngModel)]="zipCode"></ion-input>
+          </ion-item>
+        </ion-card-content>
+        <ion-card-content>
+          <ion-item>
+            <ion-label>Weather Effects</ion-label>
+            <ion-toggle checked="false" disabled="!weather || !zipCodeIsValid()"></ion-toggle>
+          </ion-item>
+          <button large>
+            <ion-icon name="cloudy"></ion-icon>
+          </button>
+          <button large (click)="changeColor(12500)">
+            <ion-icon name="sunny"></ion-icon>
+          </button>
+          <button large>
+            <ion-icon name="partly-sunny"></ion-icon>
+          </button>
+          <button large (click)="changeColor(36920)">
+            <ion-icon name="rainy"></ion-icon>
+          </button>
+          <button large>
+            <ion-icon name="thunderstorm"></ion-icon>
+          </button>
+          <button large (click)="changeColor(46920)">
+            <ion-icon name="snow"></ion-icon>
+          </button>
+          <button large>
+            <ion-icon name="cloudy-night"></ion-icon>
+          </button>
+          <button large>
+            <ion-icon name="moon"></ion-icon>
+          </button>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+
+    <!-- NOTIFICATIONS -->
+    <ion-slide style="background-color: #cff381" *ngIf="connected">
+      <ion-card>
+        <ion-card-header>
+          <h1>Push Notifications</h1></ion-card-header>
         <ion-card-content>
           <button large>
             <ion-icon name="mail"></ion-icon>
@@ -138,7 +225,8 @@
       </ion-card>
     </ion-slide>
 
-    <ion-slide style="background-color: #ed6d79">
+    <!-- NIGHTSHIFT -->
+    <ion-slide style="background-color: #ed6d79" *ngIf="connected">
       <ion-card>
         <ion-card-header>NightShift</ion-card-header>
         <ion-card-content>
